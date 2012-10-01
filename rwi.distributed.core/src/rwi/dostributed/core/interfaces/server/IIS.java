@@ -1,6 +1,7 @@
+package rwi.dostributed.core.interfaces.server;
 
 
-public interface IInformationSystem {
+public interface IIS {
 
 	/**
 	 * 
