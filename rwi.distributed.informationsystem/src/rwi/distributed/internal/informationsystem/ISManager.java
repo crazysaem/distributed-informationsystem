@@ -12,11 +12,10 @@ public class ISManager {
 		this.islist = new ArrayList<>();
 	}
 
-	public IIS generateList(float minX, float maxX, float minY, float maxY) {
+	public IIS generateIS(float minX, float maxX, float minY, float maxY) {
 		LocalInfoSystem temp = new LocalInfoSystem(minX, maxX, minY, maxY);
 		islist.add(temp);
 		return temp;
-
 	}
-
+	
 }
