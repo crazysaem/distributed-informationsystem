@@ -1,6 +1,6 @@
 package rwi.distributed.internal.iscontrol;
 
-import rwi.dostributed.core.interfaces.server.IIS;
+import rwi.distributed.core.interfaces.server.IIS;
 
 public class RangedIS {
 	

@@ -3,8 +3,8 @@ package rwi.distributed.internal.iscontrol;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import rwi.dostributed.core.interfaces.server.IIS;
-import rwi.informationsystem.internal.distributed.is.CentralInfoSysManager.IDGen;
+import rwi.distributed.core.interfaces.server.IIS;
+import rwi.distributed.internal.informationsystem.ISManager;
 
 public class MasterIS {
 
@@ -12,14 +12,31 @@ public class MasterIS {
 	HashMap<Integer, IIS> idMap;
 
 	private IDGen idgen;
-
+	private ISManager manager;
+	
+	public void setISManager(ISManager value){
+		manager = value;
+		
+	}
+	
+	protected void startup() {
+		this.idgen = new IDGen();
+		this.infosystems = new ArrayList<>();
+		this.idMap = new HashMap<>();
+	}
+	
 	public MasterIS() {
 		this.idgen = new IDGen();
+		this.infosystems = new ArrayList<>();
+		this.idMap = new HashMap<>();
 	}
 
 	public String register(int type, float posX, float posY) {
 
+		
 		IIS is = findIS(posX, posY);
+		int id = idgen.nextId();
+		idMap.put(id, is);
 		return is.registerRWI_Object(id, type, posX, posY);
 
 	}

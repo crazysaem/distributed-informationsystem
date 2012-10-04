@@ -4,3 +4,6 @@ Bundle-Name: Iscontrol
 Bundle-SymbolicName: rwi.distributed.iscontrol
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: rwi.distributed.core.interfaces.server,
+ rwi.distributed.internal.informationsystem
+Service-Component: OSGI-INF/component.xml

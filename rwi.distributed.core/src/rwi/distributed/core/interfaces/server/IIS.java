@@ -1,4 +1,4 @@
-package rwi.dostributed.core.interfaces.server;
+package rwi.distributed.core.interfaces.server;
 
 
 public interface IIS {
@@ -9,7 +9,7 @@ public interface IIS {
 	 * @param posY
 	 * @return id of the registered RWI_Object
 	 */
-	public String registerRWI_Object(int type, float posX, float posY);
+	public String registerRWI_Object(int id, int type, float posX, float posY);
 
 	public void updateRWIObjectPos(int id, float posX, float posY);
 	

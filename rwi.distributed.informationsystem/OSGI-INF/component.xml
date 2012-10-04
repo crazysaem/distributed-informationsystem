@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="startup" enabled="false" immediate="true" name="rwi.distributed.informationsystem">
+   <implementation class="rwi.distributed.internal.informationsystem.ISManager"/>
+   <service>
+      <provide interface="rwi.distributed.internal.informationsystem.ISManager"/>
+   </service>
+</scr:component>
