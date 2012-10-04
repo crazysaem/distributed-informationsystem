@@ -5,8 +5,9 @@ import java.util.HashMap;
 
 import rwi.distributed.core.interfaces.server.IIS;
 import rwi.distributed.internal.informationsystem.ISManager;
+import rwi.distributed.iscontrol.IMasterIs;
 
-public class MasterIS {
+public class MasterIS implements IMasterIs {
 
 	ArrayList<RangedIS> infosystems;
 	HashMap<Integer, IIS> idMap;
@@ -34,6 +35,7 @@ public class MasterIS {
 		this.idMap = new HashMap<>();
 	}
 
+	@Override
 	public String register(int type, float posX, float posY) {
 		
 		IIS is = findIS(posX, posY);
@@ -43,6 +45,12 @@ public class MasterIS {
 
 	}
 
+	@Override
+	public void unregister(int id){
+		idMap.get(id).unregisterRWI_Object(id);
+		idMap.remove(id);
+	}
+	
 	private IIS findIS(float posX, float posY) {
 
 		for (RangedIS ris : infosystems) {

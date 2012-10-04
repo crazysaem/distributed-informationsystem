@@ -2,4 +2,7 @@
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="startup" name="rwi.distributed.iscontrol">
    <implementation class="rwi.distributed.internal.iscontrol.MasterIS"/>
    <reference bind="setISManager" cardinality="1..1" interface="rwi.distributed.internal.informationsystem.ISManager" name="ISManager" policy="static"/>
+   <service>
+      <provide interface="rwi.distributed.internal.iscontrol.IMasterIs"/>
+   </service>
 </scr:component>
