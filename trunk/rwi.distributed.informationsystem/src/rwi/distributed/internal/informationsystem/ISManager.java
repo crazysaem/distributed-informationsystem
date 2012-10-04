@@ -8,7 +8,7 @@ public class ISManager {
 
 	ArrayList<LocalInfoSystem> islist;
 
-	protected void startup(){
+	protected void startup() {
 		this.islist = new ArrayList<>();
 	}
 
@@ -17,5 +17,8 @@ public class ISManager {
 		islist.add(temp);
 		return temp;
 	}
-	
+
+	public void destroyIS(IIS tobedestroyed) {
+		islist.remove(tobedestroyed);
+	}
 }

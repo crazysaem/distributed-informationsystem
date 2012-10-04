@@ -7,3 +7,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: rwi.distributed.core.interfaces.server,
  rwi.distributed.internal.informationsystem
 Service-Component: OSGI-INF/component.xml
+Export-Package: rwi.distributed.iscontrol
