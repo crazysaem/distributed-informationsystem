@@ -24,9 +24,6 @@ public class MasterIS implements IMasterIs {
 		this.idgen = new IDGen();
 		this.infosystems = new ArrayList<>();
 		this.idMap = new HashMap<>();
-
-		System.out.println(register(10, 30, 40));
-		System.out.println(register(10, 700, 80));
 	}
 
 	public MasterIS() {
@@ -41,8 +38,9 @@ public class MasterIS implements IMasterIs {
 		IIS is = findIS(posX, posY);
 		int id = idgen.nextId();
 		idMap.put(id, is);
+		System.out.println("unregistered:"+id);
 		return is.registerRWI_Object(id, type, posX, posY);
-
+		
 	}
 
 	@Override
