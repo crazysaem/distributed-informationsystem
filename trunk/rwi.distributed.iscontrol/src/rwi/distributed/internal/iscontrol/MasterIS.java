@@ -23,6 +23,9 @@ public class MasterIS {
 		this.idgen = new IDGen();
 		this.infosystems = new ArrayList<>();
 		this.idMap = new HashMap<>();
+		
+		System.out.println(register(10, 30, 40));
+		System.out.println(register(10, 700, 80));		
 	}
 	
 	public MasterIS() {
@@ -32,7 +35,6 @@ public class MasterIS {
 	}
 
 	public String register(int type, float posX, float posY) {
-
 		
 		IIS is = findIS(posX, posY);
 		int id = idgen.nextId();
@@ -48,7 +50,11 @@ public class MasterIS {
 			if (is != null)
 				return is;
 		}
-		return null;
+		System.out.println("New Is generated!");
+		IIS s = manager.generateIS(posX - 10, posX - 20, posY - 10, posY + 10);
+		infosystems.add(new RangedIS(posX - 10, posX - 20, posY - 10, posY + 10, s));
+		return s; 
+		
 	}
 
 	private class IDGen {
