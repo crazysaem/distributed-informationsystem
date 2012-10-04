@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="startup" name="rwi.distributed.simluation">
+   <implementation class="rwi.distributed.internal.simulation.RWIDistributedTest"/>
+   <reference bind="setMaster" cardinality="1..1" interface="rwi.distributed.iscontrol.IMasterIs" name="IMasterIs" policy="static"/>
+</scr:component>
