@@ -14,21 +14,21 @@ public class MasterIS implements IMasterIs {
 
 	private IDGen idgen;
 	private ISManager manager;
-	
-	public void setISManager(ISManager value){
+
+	public void setISManager(ISManager value) {
 		manager = value;
-		
+
 	}
-	
+
 	protected void startup() {
 		this.idgen = new IDGen();
 		this.infosystems = new ArrayList<>();
 		this.idMap = new HashMap<>();
-		
+
 		System.out.println(register(10, 30, 40));
-		System.out.println(register(10, 700, 80));		
+		System.out.println(register(10, 700, 80));
 	}
-	
+
 	public MasterIS() {
 		this.idgen = new IDGen();
 		this.infosystems = new ArrayList<>();
@@ -36,8 +36,8 @@ public class MasterIS implements IMasterIs {
 	}
 
 	@Override
-	public String register(int type, float posX, float posY) {
-		
+	public synchronized String register(int type, float posX, float posY) {
+
 		IIS is = findIS(posX, posY);
 		int id = idgen.nextId();
 		idMap.put(id, is);
@@ -46,11 +46,12 @@ public class MasterIS implements IMasterIs {
 	}
 
 	@Override
-	public void unregister(int id){
+	public synchronized void unregister(int id) {
 		idMap.get(id).unregisterRWI_Object(id);
 		idMap.remove(id);
+		idgen.removeId(id);
 	}
-	
+
 	private IIS findIS(float posX, float posY) {
 
 		for (RangedIS ris : infosystems) {
@@ -60,9 +61,10 @@ public class MasterIS implements IMasterIs {
 		}
 		System.out.println("New Is generated!");
 		IIS s = manager.generateIS(posX - 10, posX - 20, posY - 10, posY + 10);
-		infosystems.add(new RangedIS(posX - 10, posX - 20, posY - 10, posY + 10, s));
-		return s; 
-		
+		infosystems.add(new RangedIS(posX - 10, posX - 20, posY - 10,
+				posY + 10, s));
+		return s;
+
 	}
 
 	private class IDGen {
@@ -74,7 +76,7 @@ public class MasterIS implements IMasterIs {
 			freeids = new ArrayList<Integer>();
 		}
 
-		public int nextId() {
+		public synchronized int nextId() {
 			if (freeids.size() == 0) {
 				return id++;
 			} else {
@@ -82,7 +84,7 @@ public class MasterIS implements IMasterIs {
 			}
 		}
 
-		public void removeId(int id) {
+		public synchronized void removeId(int id) {
 			if (id == (this.id - 1)) {
 				this.id--;
 			} else {
