@@ -3,6 +3,6 @@
    <implementation class="rwi.distributed.internal.iscontrol.MasterIS"/>
    <reference bind="setISManager" cardinality="1..1" interface="rwi.distributed.internal.informationsystem.ISManager" name="ISManager" policy="static"/>
    <service>
-      <provide interface="rwi.distributed.internal.iscontrol.IMasterIs"/>
+      <provide interface="rwi.distributed.iscontrol.IMasterIs"/>
    </service>
 </scr:component>
