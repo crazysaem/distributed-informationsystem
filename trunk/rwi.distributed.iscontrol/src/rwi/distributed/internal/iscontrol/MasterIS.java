@@ -17,13 +17,17 @@ public class MasterIS implements IMasterIs {
 
 	public void setISManager(ISManager value) {
 		manager = value;
-
 	}
 
 	protected void startup() {
 		this.idgen = new IDGen();
 		this.infosystems = new ArrayList<>();
 		this.idMap = new HashMap<>();
+		System.out.println("Master Controler started!");
+		
+		register(1, 10, 10);
+		register(1, 10, 10);
+		register(1, 10, 10);
 	}
 
 	public MasterIS() {
@@ -38,7 +42,6 @@ public class MasterIS implements IMasterIs {
 		IIS is = findIS(posX, posY);
 		int id = idgen.nextId();
 		idMap.put(id, is);
-		System.out.println("unregistered:"+id);
 		return is.registerRWI_Object(id, type, posX, posY);
 		
 	}
@@ -56,15 +59,21 @@ public class MasterIS implements IMasterIs {
 			IIS is = ris.isInRange(posX, posY);
 			if (is != null)
 				return is;
-		}
-		System.out.println("New Is generated!");
-		IIS s = manager.generateIS(posX - 10, posX - 20, posY - 10, posY + 10);
-		infosystems.add(new RangedIS(posX - 10, posX - 20, posY - 10,
-				posY + 10, s));
-		return s;
+		}				
+		
+		return makeNewIS(posX, posY);
 
 	}
 
+	private IIS makeNewIS(float posX,float posY){
+		int range = 20;
+		IIS s = manager.generateIS(posX - range, posX +range, posY - range, posY + range);
+		infosystems.add(new RangedIS(posX - range, posX +range, posY - range,
+				posY + range, s));
+		System.out.println("New Is generated!");
+		return s;
+	}
+	
 	private class IDGen {
 		private int id;
 		private ArrayList<Integer> freeids;
