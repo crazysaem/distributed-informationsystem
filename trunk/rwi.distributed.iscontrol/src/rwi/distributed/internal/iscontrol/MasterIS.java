@@ -24,10 +24,6 @@ public class MasterIS implements IMasterIs {
 		this.infosystems = new ArrayList<>();
 		this.idMap = new HashMap<>();
 		System.out.println("Master Controler started!");
-		
-		register(1, 10, 10);
-		register(1, 10, 10);
-		register(1, 10, 10);
 	}
 
 	public MasterIS() {
@@ -52,7 +48,8 @@ public class MasterIS implements IMasterIs {
 		idMap.remove(id);
 		idgen.removeId(id);
 	}
-
+	
+	
 	private IIS findIS(float posX, float posY) {
 
 		for (RangedIS ris : infosystems) {
