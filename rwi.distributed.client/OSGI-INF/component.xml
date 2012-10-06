@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="startup" immediate="true" name="rwi.distributed.client">
+   <implementation class="rwi.distributed.internal.client.ConnectionManager"/>
+   <service>
+      <provide interface="rwi.distributed.internal.client.ConnectionManager"/>
+   </service>
+</scr:component>

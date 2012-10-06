@@ -11,7 +11,7 @@ import rwi.distributed.core.variables.RwiCommunication;
 
 public class Client {
 
-	private String isaddress = "http://localhost:8080/";
+	private String isaddress = "http://localhost:8080";
 
 	public int register(String message) {
 		String res = SendRequest(message, RwiCommunication.REQUESTMETHOD_POST,
@@ -20,7 +20,7 @@ public class Client {
 	}
 
 	public void unregister(String id) {
-		SendRequest(id, RwiCommunication.REQUESTMETHOD_DELETE,
+		SendRequest(id, RwiCommunication.REQUESTMETHOD_POST,
 				isaddress + RwiCommunication.REGISTER_SERVLET);
 	}
 
@@ -49,6 +49,7 @@ public class Client {
 			for (String line; (line = reader.readLine()) != null;) {
 				result += line;
 			}
+			System.out.println(result);
 
 			writer.close();
 			reader.close();
