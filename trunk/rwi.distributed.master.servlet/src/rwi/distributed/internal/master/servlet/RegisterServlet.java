@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import rwi.distributed.core.variables.RwiCommunication;
 import rwi.distributed.iscontrol.IMasterIs;
 
 public class RegisterServlet extends HttpServlet{
@@ -21,7 +22,7 @@ public class RegisterServlet extends HttpServlet{
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 		super.doDelete(req, resp);
 	}
 	
@@ -29,7 +30,17 @@ public class RegisterServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		int type = -1;
+		float posX = -1;
+		float posY = -1;
+		//catch parameters
+		if(req.getParameter(RwiCommunication.PARAMETER_POSX)!=null && !req.getParameter(RwiCommunication.PARAMETER_POSX).isEmpty())
+			posX = Float.parseFloat(req.getParameter(RwiCommunication.PARAMETER_POSX));
+		if(req.getParameter(RwiCommunication.PARAMETER_POSY)!=null && !req.getParameter(RwiCommunication.PARAMETER_POSY).isEmpty())
+			posY = Float.parseFloat(req.getParameter(RwiCommunication.PARAMETER_POSY));
+		if(req.getParameter(RwiCommunication.PARAMETER_TYPE)!=null && !req.getParameter(RwiCommunication.PARAMETER_TYPE).isEmpty())
+			type = Integer.parseInt(req.getParameter(RwiCommunication.PARAMETER_TYPE));
+		isControl.register(type, posX, posY);
 		super.doPost(req, resp);
 	}
 }

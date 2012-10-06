@@ -11,13 +11,18 @@ import rwi.distributed.iscontrol.IMasterIs;
 public class ServletManager {
 
 	private HttpService http;
+	private IMasterIs mastercontrol;
 
 	protected void setHttp(HttpService value) {
 		this.http = value;
 	}
 
+	protected void setMaster(IMasterIs value) {
+		this.mastercontrol = value;
+	}
+	
 	protected void startup() {
-		initServlets(null);
+		initServlets(mastercontrol);
 	}
 
 	private void initServlets(IMasterIs master) {
