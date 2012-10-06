@@ -5,3 +5,4 @@ Bundle-SymbolicName: rwi.distributed.client
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: rwi.distributed.core.variables
+Service-Component: OSGI-INF/component.xml
