@@ -1,3 +1,5 @@
+package rwi.distributed.internal.client;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,10 +10,18 @@ import java.net.URL;
 import rwi.distributed.core.variables.RwiCommunication;
 
 public class Client {
-	public int register() {
-		String message = "posx = &posY=";
-		SendRequest(message, RwiCommunication.REQUESTMETHOD_POST,"http://localhost:8080/" + RwiCommunication.REGISTER_SERVLET);
-		return -1;
+
+	private String isaddress = "http://localhost:8080/";
+
+	public int register(String message) {
+		String res = SendRequest(message, RwiCommunication.REQUESTMETHOD_POST,
+				isaddress + RwiCommunication.REGISTER_SERVLET);
+		return Integer.parseInt(res);
+	}
+
+	public void unregister(String id) {
+		SendRequest(id, RwiCommunication.REQUESTMETHOD_DELETE,
+				isaddress + RwiCommunication.REGISTER_SERVLET);
 	}
 
 	private String SendRequest(String message, String RequestMethod,
@@ -25,20 +35,24 @@ public class Client {
 			conn.setDoOutput(true);
 			conn.setUseCaches(false);
 			conn.setRequestProperty("Content-Type", "text/html");
-			conn.setRequestProperty("Content-Length", String.valueOf(message.length()));
+			conn.setRequestProperty("Content-Length",
+					String.valueOf(message.length()));
 
-			OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
+			OutputStreamWriter writer = new OutputStreamWriter(
+					conn.getOutputStream());
 			writer.write(message);
 			writer.flush();
 
-			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					conn.getInputStream()));
 
 			for (String line; (line = reader.readLine()) != null;) {
-				result+=line;
+				result += line;
 			}
 
 			writer.close();
 			reader.close();
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

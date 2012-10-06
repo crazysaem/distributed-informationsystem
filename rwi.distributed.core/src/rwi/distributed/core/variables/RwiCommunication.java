@@ -7,8 +7,8 @@ public class RwiCommunication {
 	public static final String PARAMETER_ID = "id";
 	public static final String PARAMETER_TYPE = "type";
 	
-	public static final String REGISTER_SERVLET = "register";
-	public static final String POSITION_SERVLET = "position";
+	public static final String REGISTER_SERVLET = "/register";
+	public static final String POSITION_SERVLET = "/position";
 	
 	public static final String REQUESTMETHOD_POST = "POST";
 	public static final String REQUESTMETHOD_GET = "GET";
