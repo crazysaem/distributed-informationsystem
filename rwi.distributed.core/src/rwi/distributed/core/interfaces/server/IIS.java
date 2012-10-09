@@ -20,4 +20,6 @@ public interface IIS {
 	public void changeRWIObjectState(int id,int state);
 	
 	public int getID();
+	
+	public IIS isInRange(float posX, float posY);
 }
