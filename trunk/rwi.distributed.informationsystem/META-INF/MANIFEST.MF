@@ -6,3 +6,5 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Service-Component: OSGI-INF/component.xml
 Export-Package: rwi.distributed.internal.informationsystem
+Import-Package: rwi.distributed.core.classes,
+ rwi.distributed.core.interfaces.server

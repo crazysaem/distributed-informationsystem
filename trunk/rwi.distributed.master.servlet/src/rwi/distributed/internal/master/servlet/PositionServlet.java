@@ -21,8 +21,10 @@ public class PositionServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doDelete(req, resp);
+		String s = isControl.getInfo();
+		
+		resp.setContentType("text/html;charset=UTF-8");
+		resp.getWriter().write(s);
 	}
 	
 	//update Position
