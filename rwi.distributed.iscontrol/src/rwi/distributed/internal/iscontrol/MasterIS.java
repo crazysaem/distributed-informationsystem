@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import rwi.distributed.core.classes.LocalInfoSystem;
+import rwi.distributed.core.classes.RWIVehicle;
 import rwi.distributed.core.interfaces.server.IIS;
 import rwi.distributed.core.interfaces.server.IISManager;
 import rwi.distributed.iscontrol.IMasterIs;
@@ -40,13 +41,13 @@ public class MasterIS implements IMasterIs {
 
 		int id = objIdGen.nextId();
 		IIS is = findIS(posX, posY);
-		if (is.isFull()) {
-			splitIS(is);
-		} else {
-			// TODO
-			idMap.put(id, is);
+		idMap.put(id, is);
+		String result = is.registerRWI_Object(id, type, posX, posY);
+		
+		if (is.isFull()) {			
+			new SplitThread(is, this).start();			
 		}
-		return is.registerRWI_Object(id, type, posX, posY);
+		return result;
 
 	}
 
@@ -60,9 +61,8 @@ public class MasterIS implements IMasterIs {
 	private IIS findIS(float posX, float posY) {
 
 		for (IIS ris : infosystems) {
-			IIS is = ris.isInRange(posX, posY);
-			if (is != null)
-				return is;
+			if (ris.isInRange(posX, posY))
+				return ris;
 		}
 
 		return makeNewIS(posX, posY);
@@ -78,22 +78,22 @@ public class MasterIS implements IMasterIs {
 		return s;
 	}
 
-	private IIS splitIS(IIS is) {
+	public void splitIS(IIS is) {
 
 		float[] range = is.getRange();
 		float distX = range[1] - range[0];
 		float distY = range[3] - range[2];
 		float[] range2 = new float[4];
 		if (distX < distY) {
-
+			//calculate the new ranges
 			range2[0] = range[0];
 			range2[1] = range[1];
 			range2[2] = range[2];
 			range2[3] = range[3] - distY / 2;
 
 			range[2] = range[2] + distY / 2;
-
 		} else {
+			//calculate the new ranges
 			range2[0] = range[0];
 			range2[1] = range[1] - distX / 2;
 			range2[2] = range[2];
@@ -104,20 +104,22 @@ public class MasterIS implements IMasterIs {
 		
 		is.setRange(range[0], range[1], range[2], range[3]);
 		
-		//TODO
-		int id = isIdGen.nextId();	
-		
+		//TODO: implement functionality to choose between a new local or network InfoSys
+		//generate new InfoSys
+		int id = isIdGen.nextId();		
 		LocalInfoSystem nis = (LocalInfoSystem)manager.generateIS(range2[0], range2[1], range2[2], range2[3], id);
 		infosystems.add(nis);
 		
-		return nis;
-
+		moveObjs(is, nis);
 	}
 	
 	
 	private void moveObjs(IIS is, IIS nis){
-		
-		
+		RWIVehicle[] ve = is.getObjectsOutOfRange();
+		for(RWIVehicle v : ve){
+			idMap.put(v.getId(), nis);
+		}
+		nis.registerObjects(ve);		
 	}
 
 }

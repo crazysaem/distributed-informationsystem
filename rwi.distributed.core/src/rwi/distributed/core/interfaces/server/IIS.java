@@ -1,5 +1,7 @@
 package rwi.distributed.core.interfaces.server;
 
+import rwi.distributed.core.classes.RWIVehicle;
+
 
 public interface IIS {
 
@@ -21,7 +23,7 @@ public interface IIS {
 	
 	public int getID();
 	
-	public IIS isInRange(float posX, float posY);
+	public boolean isInRange(float posX, float posY);
 	
 	public boolean isFull();
 	
@@ -33,4 +35,7 @@ public interface IIS {
 	
 	public void setRange(float minX, float maxX,float minY, float maxY);
 	
+	public RWIVehicle[] getObjectsOutOfRange();
+	
+	public void registerObjects(RWIVehicle[] v);
 }
