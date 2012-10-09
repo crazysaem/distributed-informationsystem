@@ -4,6 +4,7 @@ Bundle-Name: Core
 Bundle-SymbolicName: rwi.distributed.core
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: rwi.distributed.core.interfaces.client,
+Export-Package: rwi.distributed.core.classes,
+ rwi.distributed.core.interfaces.client,
  rwi.distributed.core.interfaces.server,
  rwi.distributed.core.variables

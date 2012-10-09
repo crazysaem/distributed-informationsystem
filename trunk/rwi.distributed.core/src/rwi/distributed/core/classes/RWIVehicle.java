@@ -1,4 +1,4 @@
-package rwi.distributed.internal.informationsystem;
+package rwi.distributed.core.classes;
 
 
 public class RWIVehicle {

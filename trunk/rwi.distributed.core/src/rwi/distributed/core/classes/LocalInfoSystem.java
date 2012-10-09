@@ -1,9 +1,7 @@
-package rwi.distributed.internal.informationsystem;
+package rwi.distributed.core.classes;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import rwi.distributed.core.interfaces.client.IObjectClient;
 import rwi.distributed.core.interfaces.server.IIS;
 import rwi.distributed.core.variables.GlobalVars;
 
@@ -11,12 +9,16 @@ public class LocalInfoSystem implements IIS {
 
 	HashMap<Integer, RWIVehicle> objectMap;
 	private float minX, maxX, minY, maxY;
+	private int id;
 
-	public LocalInfoSystem(float minX, float maxX, float minY, float maxY) {
+	public LocalInfoSystem(float minX, float maxX, float minY, float maxY,
+			int id) {
 		objectMap = new HashMap<>();
+		this.minX = minX;
 		this.maxX = maxX;
 		this.minY = minY;
 		this.maxY = maxY;
+		this.id = id;
 	}
 
 	@Override
@@ -50,6 +52,11 @@ public class LocalInfoSystem implements IIS {
 	public void changeRWIObjectState(int id, int state) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public int getID() {
+		return id;
 	}
 
 }
