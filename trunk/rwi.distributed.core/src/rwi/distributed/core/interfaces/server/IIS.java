@@ -22,4 +22,15 @@ public interface IIS {
 	public int getID();
 	
 	public IIS isInRange(float posX, float posY);
+	
+	public boolean isFull();
+	
+	/**
+	 * 
+	 * @return [0]= minX, [1]=maxX,[2]= minY, [3]=maxY,
+	 */
+	public float[] getRange();
+	
+	public void setRange(float minX, float maxX,float minY, float maxY);
+	
 }
