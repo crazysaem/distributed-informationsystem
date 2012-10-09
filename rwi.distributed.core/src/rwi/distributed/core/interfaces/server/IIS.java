@@ -1,5 +1,7 @@
 package rwi.distributed.core.interfaces.server;
 
+import java.util.ArrayList;
+
 import rwi.distributed.core.classes.RWIVehicle;
 
 
@@ -35,7 +37,11 @@ public interface IIS {
 	
 	public void setRange(float minX, float maxX,float minY, float maxY);
 	
-	public RWIVehicle[] getObjectsOutOfRange();
+	public ArrayList<RWIVehicle> getObjectsOutOfRange();
 	
-	public void registerObjects(RWIVehicle[] v);
+	public void registerObjects(ArrayList<RWIVehicle> v);
+	
+	public int getCount();
+	
+	public String getInfo();
 }

@@ -9,7 +9,9 @@ import rwi.distributed.core.variables.GlobalVars;
 
 public class LocalInfoSystem implements IIS {
 
+	private boolean isInUse;
 	HashMap<Integer, RWIVehicle> objectMap;
+	ArrayList<Integer> idlist = new ArrayList<>();
 	private float minX, maxX, minY, maxY;
 	private int id;
 	private int objcount;
@@ -23,6 +25,7 @@ public class LocalInfoSystem implements IIS {
 		this.maxY = maxY;
 		this.id = id;
 		this.objcount = 0;
+		isInUse = false;
 	}
 
 	@Override
@@ -30,8 +33,9 @@ public class LocalInfoSystem implements IIS {
 
 		objcount++;
 		if (type <= GlobalVars.MAXVEHICLETYPE) {
-			objectMap.put(id, new RWIVehicle(posX, posY, type,id));
+			objectMap.put(id, new RWIVehicle(posX, posY, type, id));
 		}
+		idlist.add(id);
 		return "" + id;
 	}
 
@@ -45,6 +49,7 @@ public class LocalInfoSystem implements IIS {
 	public void unregisterRWI_Object(int id) {
 		// TODO Auto-generated method stub
 		objectMap.remove(id);
+		idlist.remove(id);
 		objcount--;
 	}
 
@@ -67,7 +72,7 @@ public class LocalInfoSystem implements IIS {
 
 	@Override
 	public boolean isInRange(float posX, float posY) {
-		if ((minX < posX && posX < maxX) && (minY < posY && posY < maxY)) {
+		if ((minX <= posX && posX <= maxX) && (minY <= posY && posY <= maxY)) {
 			return true;
 		}
 		return false;
@@ -75,7 +80,7 @@ public class LocalInfoSystem implements IIS {
 
 	@Override
 	public boolean isFull() {
-		if (objcount > 1000)
+		if (objcount >= 1000)
 			return true;
 		else
 			return false;
@@ -96,24 +101,44 @@ public class LocalInfoSystem implements IIS {
 	}
 
 	@Override
-	public RWIVehicle[] getObjectsOutOfRange() {
-		ArrayList<RWIVehicle> list =  new ArrayList<>();
-		Iterator<Integer> it = objectMap.keySet().iterator();
-	    while (it.hasNext()) {
-	    	int id = it.next();
-	    	RWIVehicle v = objectMap.get(id);
-	        if(!isInRange(v.posX, v.posY)){
-	        	list.add(v);
-	        	objectMap.remove(id);
-	        }
-	    }		
-	    return (RWIVehicle[]) list.toArray();		
+	public ArrayList<RWIVehicle> getObjectsOutOfRange() {
+		ArrayList<RWIVehicle> list = new ArrayList<>();
+		ArrayList<Integer> idl = (ArrayList<Integer>) idlist.clone();
+		int count = 0;
+		RWIVehicle v;
+		while (count < idl.size()
+				&& (v = objectMap.get(idl.get(count++))) != null) {
+			if (!isInRange(v.posX, v.posY)) {
+				list.add(v);
+				idlist.remove((Integer) idl.get(count - 1));
+				objectMap.remove(idl.get(count - 1));
+				objcount--;
+			}
+		}
+		return list;
 	}
 
 	@Override
-	public void registerObjects(RWIVehicle[] ve) {
-		for(RWIVehicle v:ve){
+	public void registerObjects(ArrayList<RWIVehicle> ve) {
+		for (RWIVehicle v : ve) {
 			registerRWI_Object(v.id, v.type, v.posX, v.posY);
 		}
-	}	
+	}
+
+	public int getCount() {
+		return this.objcount;
+	}
+
+	public String getInfo() {
+		String s = "";
+		ArrayList<Integer> idl = (ArrayList<Integer>) idlist.clone();
+		int count = 0;
+		RWIVehicle v;
+		float width = maxY-minY;
+		while (count < idl.size() && (v = objectMap.get(idl.get(count++))) != null) {
+			s+="<div style=\"width:2px;height:2px;background-color:#000;top:"+(v.posY)+"px;left:"+(v.posX)+"px;position:absolute;\"></div>";
+		}
+		return s;
+	}
+
 }

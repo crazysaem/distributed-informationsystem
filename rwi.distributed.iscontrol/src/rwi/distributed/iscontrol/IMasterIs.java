@@ -6,4 +6,5 @@ public interface IMasterIs {
 
 	public void unregister(int id);
 
+	public String getInfo();
 }
