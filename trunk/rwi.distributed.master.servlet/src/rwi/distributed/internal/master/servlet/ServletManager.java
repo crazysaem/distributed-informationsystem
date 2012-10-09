@@ -28,7 +28,6 @@ public class ServletManager {
 	private void initServlets(IMasterIs master) {
 		RegisterServlet reg_servlet = new RegisterServlet(master);
 		PositionServlet pos_servlet = new PositionServlet(master);
-		UnregisterServlet unreg_servlet = new UnregisterServlet(master);
 		try {
 			// register Registration-Servlet
 			reg_servlet.init();
@@ -39,11 +38,7 @@ public class ServletManager {
 			pos_servlet.init();
 			address = RwiCommunication.POSITION_SERVLET;
 			http.registerServlet(address, pos_servlet, null, null);
-
-			// unregister Registration-Servlet
-			reg_servlet.init();
-			address = RwiCommunication.UNREGISTER_SERVLET;
-			http.registerServlet(address, unreg_servlet, null, null);
+			
 		} catch (ServletException | NamespaceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

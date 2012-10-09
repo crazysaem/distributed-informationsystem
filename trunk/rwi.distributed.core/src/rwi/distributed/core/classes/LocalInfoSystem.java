@@ -58,5 +58,13 @@ public class LocalInfoSystem implements IIS {
 	public int getID() {
 		return id;
 	}
+	
+	@Override
+	public IIS isInRange(float posX, float posY) {
+		if ((minX < posX && posX < maxX) && (minY < posY && posY < maxY)) {
+			return this;
+		}
+		return null;
+	}
 
 }

@@ -3,20 +3,21 @@ package rwi.distributed.internal.iscontrol;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import rwi.distributed.core.classes.LocalInfoSystem;
 import rwi.distributed.core.interfaces.server.IIS;
-import rwi.distributed.internal.informationsystem.ISManager;
+import rwi.distributed.core.interfaces.server.IISManager;
 import rwi.distributed.iscontrol.IMasterIs;
 
 public class MasterIS implements IMasterIs {
 
-	ArrayList<RangedIS> infosystems;
+	ArrayList<IIS> infosystems;
 	HashMap<Integer, IIS> idMap;
 
 	private IDGen objIdGen;
 	private IDGen isIdGen;
-	private ISManager manager;
+	private IISManager manager;
 
-	public void setISManager(ISManager value) {
+	public void setISManager(IISManager value) {
 		manager = value;
 	}
 
@@ -53,7 +54,7 @@ public class MasterIS implements IMasterIs {
 
 	private IIS findIS(float posX, float posY) {
 
-		for (RangedIS ris : infosystems) {
+		for (IIS ris : infosystems) {
 			IIS is = ris.isInRange(posX, posY);
 			if (is != null)
 				return is;
@@ -67,8 +68,7 @@ public class MasterIS implements IMasterIs {
 		int range = 20;
 		IIS s = manager.generateIS(posX - range, posX + range, posY - range,
 				posY + range,isIdGen.nextId());
-		infosystems.add(new RangedIS(posX - range, posX + range, posY - range,
-				posY + range, s));
+		infosystems.add(s);
 		System.out.println("New Is generated!");
 		return s;
 	}
