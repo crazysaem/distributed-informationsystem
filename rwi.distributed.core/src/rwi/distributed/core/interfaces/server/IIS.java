@@ -19,4 +19,5 @@ public interface IIS {
 	
 	public void changeRWIObjectState(int id,int state);
 	
+	public int getID();
 }
