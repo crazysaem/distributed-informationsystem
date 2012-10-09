@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 
 import rwi.distributed.core.variables.RwiCommunication;
 
@@ -19,40 +20,41 @@ public class Client {
 		return Integer.parseInt(res);
 	}
 
-	public void unregister(String id) {
-		SendRequest(id, RwiCommunication.REQUESTMETHOD_POST,
-				isaddress + RwiCommunication.REGISTER_SERVLET);
+	public void unregister(String message) {
+		SendRequest(message, RwiCommunication.REQUESTMETHOD_DELETE, isaddress
+				+ RwiCommunication.REGISTER_SERVLET);
 	}
 
 	private String SendRequest(String message, String RequestMethod,
 			String UrlTarget) {
 		String result = "";
 		try {
-			URL url = new URL(UrlTarget);
+			URL url = new URL(UrlTarget + "?" + message);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod(RequestMethod);
 			conn.setDoInput(true);
 			conn.setDoOutput(true);
 			conn.setUseCaches(false);
-			conn.setRequestProperty("Content-Type", "text/html");
-			conn.setRequestProperty("Content-Length",
-					String.valueOf(message.length()));
 
-			OutputStreamWriter writer = new OutputStreamWriter(
-					conn.getOutputStream());
-			writer.write(message);
-			writer.flush();
+			// OutputStreamWriter writer = new OutputStreamWriter(
+			// conn.getOutputStream());
+			// writer.write(message);
+			// writer.flush();
+			if (RequestMethod.equals(RwiCommunication.REQUESTMETHOD_DELETE)) {
+				conn.connect();
+				System.out.println("sent delete request...");
+			} else {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(conn.getInputStream()));
 
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					conn.getInputStream()));
+				for (String line; (line = reader.readLine()) != null;) {
+					result += line;
+				}
+				System.out.println(result);
 
-			for (String line; (line = reader.readLine()) != null;) {
-				result += line;
+				// writer.close();
+				reader.close();
 			}
-			System.out.println(result);
-
-			writer.close();
-			reader.close();
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

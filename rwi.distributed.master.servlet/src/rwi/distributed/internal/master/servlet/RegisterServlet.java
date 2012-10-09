@@ -18,6 +18,20 @@ public class RegisterServlet extends HttpServlet {
 		this.isControl = isControl;
 	}
 
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		int id = -1;
+		// catch parameters
+
+		if (req.getParameter(RwiCommunication.PARAMETER_ID) != null
+				&& !req.getParameter(RwiCommunication.PARAMETER_ID).isEmpty())
+			id = Integer.parseInt(req
+					.getParameter(RwiCommunication.PARAMETER_ID));
+		
+		isControl.unregister(id);
+	}
+	
 	// register
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -39,8 +53,8 @@ public class RegisterServlet extends HttpServlet {
 				&& !req.getParameter(RwiCommunication.PARAMETER_TYPE).isEmpty())
 			type = Integer.parseInt(req
 					.getParameter(RwiCommunication.PARAMETER_TYPE));
-		resp.getWriter().write("" + isControl.register(type, posX, posY));
-
+		resp.setContentType("text/html;charset=UTF-8");
+		resp.getWriter().write("" + isControl.register(type, posX, posY));		
 	}
 
 	@Override
