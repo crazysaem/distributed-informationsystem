@@ -39,7 +39,7 @@ public class MasterIS implements IMasterIs {
 		int id = idgen.nextId();
 		idMap.put(id, is);
 		return is.registerRWI_Object(id, type, posX, posY);
-		
+
 	}
 
 	@Override
@@ -48,52 +48,27 @@ public class MasterIS implements IMasterIs {
 		idMap.remove(id);
 		idgen.removeId(id);
 	}
-	
-	
+
 	private IIS findIS(float posX, float posY) {
 
 		for (RangedIS ris : infosystems) {
 			IIS is = ris.isInRange(posX, posY);
 			if (is != null)
 				return is;
-		}				
-		
+		}
+
 		return makeNewIS(posX, posY);
 
 	}
 
-	private IIS makeNewIS(float posX,float posY){
+	private IIS makeNewIS(float posX, float posY) {
 		int range = 20;
-		IIS s = manager.generateIS(posX - range, posX +range, posY - range, posY + range);
-		infosystems.add(new RangedIS(posX - range, posX +range, posY - range,
+		IIS s = manager.generateIS(posX - range, posX + range, posY - range,
+				posY + range);
+		infosystems.add(new RangedIS(posX - range, posX + range, posY - range,
 				posY + range, s));
 		System.out.println("New Is generated!");
 		return s;
 	}
-	
-	private class IDGen {
-		private int id;
-		private ArrayList<Integer> freeids;
 
-		public IDGen() {
-			id = 0;
-			freeids = new ArrayList<Integer>();
-		}
-
-		public synchronized int nextId() {
-			if (freeids.size() == 0) {
-				return id++;
-			} else {
-				return freeids.remove(0);
-			}
-		}
-
-		public synchronized void removeId(int id) {
-			if (id == (this.id - 1)) {
-				this.id--;
-			} else {
-				this.freeids.add(id);
-			}
-		}
-	}
 }
