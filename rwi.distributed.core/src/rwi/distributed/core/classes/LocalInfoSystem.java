@@ -141,4 +141,14 @@ public class LocalInfoSystem implements IIS {
 		return s;
 	}
 
+	@Override
+	public IIS split(IIS is, int id, HashMap<Integer, IIS> idMap) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public boolean contains(int id){
+		return idlist.contains((Integer)id);
+	}
+
 }
