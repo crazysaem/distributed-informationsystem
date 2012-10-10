@@ -1,6 +1,7 @@
 package rwi.distributed.core.interfaces.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import rwi.distributed.core.classes.RWIVehicle;
 
@@ -44,4 +45,8 @@ public interface IIS {
 	public int getCount();
 	
 	public String getInfo();
+	
+	public IIS split(IIS is,int id,HashMap<Integer, IIS> idMap);
+	
+	public boolean contains(int id);
 }
