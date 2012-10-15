@@ -9,7 +9,6 @@ public class ClientStub {
 		client = new Client();
 	}
 	
-
 	public int register(int type,float posX,float posY){
 		String message = "";
 		message += generateParamter(RwiCommunication.PARAMETER_TYPE, type);
