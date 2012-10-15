@@ -15,7 +15,7 @@ public class ConnectionManager {
 		stub = new ClientStub();
 		// int[] ids = new int[11];
 		long start = System.currentTimeMillis();
-		while (count++ < 10000) {
+		while (count++ < 5000) {
 			// ids[count-1]=
 			stub.register(0, rand.nextInt(600)+1, rand.nextInt(600));
 		}
