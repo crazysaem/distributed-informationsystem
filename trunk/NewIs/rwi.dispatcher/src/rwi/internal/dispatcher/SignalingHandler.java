@@ -1,5 +1,6 @@
 package rwi.internal.dispatcher;
 
+import rwi.core.classes.NetWorkIS;
 import rwi.internal.dispatcher.communication.SignalTransfer;
 
 public class SignalingHandler {

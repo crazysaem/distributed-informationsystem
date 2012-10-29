@@ -10,6 +10,7 @@ import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
 
 import rwi.core.classes.IDGen;
+import rwi.core.classes.NetWorkIS;
 import rwi.core.interfaces.server.ICommunicationHandler;
 import rwi.core.variables.RwiCommunication;
 
