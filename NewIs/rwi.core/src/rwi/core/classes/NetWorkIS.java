@@ -8,6 +8,15 @@ public class NetWorkIS implements ICommunicationHandler{
 	private String port;
 	private float minX, maxX, minY, maxY;
 	
+	public NetWorkIS(String ip,String port){
+		this.ipaddress = ip;
+		this.port = port;
+		this.minX = -1;
+		this.maxX = -1;
+		this.minY = -1;
+		this.maxY = -1;
+	}
+	
 	public NetWorkIS(String ipaddress,String port,float minX, float maxX, float minY, float maxY){
 		this.ipaddress = ipaddress;
 		this.port = port;
@@ -49,8 +58,15 @@ public class NetWorkIS implements ICommunicationHandler{
 
 	@Override
 	public void updateState(int id, int state) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
+	}
+	
+	public String getIp(){
+		return this.ipaddress;
+	}
+	
+	public String getPort(){
+		return this.port;
 	}
 
 }
