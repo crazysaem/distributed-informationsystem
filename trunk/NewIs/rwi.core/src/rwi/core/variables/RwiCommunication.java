@@ -22,6 +22,8 @@ public class RwiCommunication {
 	public static final int SIGNALING_MODE_INIT_DISP = 3;
 	public static final int SIGNALING_MODE_INIT_IS = 4;
 	public static final int SIGNALING_MODE_UNREGISTER = 5;
+	public static final int SIGNALING_MODE_ASK_FOR_IS = 6;
+	public static final int SIGNALING_MODE_IS_READY = 7;
 	
 	
 	public static final String REGISTER_SERVLET = "/register";

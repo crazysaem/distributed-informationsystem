@@ -17,6 +17,15 @@ public class NetWorkIS implements ICommunicationHandler{
 		this.maxY = -1;
 	}
 	
+	public NetWorkIS(String ip,String port,float[] range){
+		this.ipaddress = ip;
+		this.port = port;
+		this.minX = range[0];
+		this.maxX = range[1];
+		this.minY = range[2];
+		this.maxY = range[3];
+	}
+	
 	public NetWorkIS(String ipaddress,String port,float minX, float maxX, float minY, float maxY){
 		this.ipaddress = ipaddress;
 		this.port = port;

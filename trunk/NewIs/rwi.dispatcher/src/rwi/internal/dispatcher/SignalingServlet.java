@@ -27,11 +27,13 @@ public class SignalingServlet extends HttpServlet{
 			mode = Integer.parseInt(req.getParameter(RwiCommunication.PARAMETER_SIGNALING_MODE));
 		}
 		String[] ipport;
-		switch(mode){		
+		switch(mode){	
+		//A free server is ready to be used
 		case RwiCommunication.SIGNALING_MODE_SERVERREADY:
 			ipport = retrieveIpAndPort(req);
-			signalhandler.handleServerReady(ipport[0],ipport[1]);
+			((RootSignalingHandler)signalhandler).handleServerReady(ipport[0],ipport[1]);
 			break;
+		//An object was unregistered. The ID needs to be removed from all instances.
 		case RwiCommunication.SIGNALING_MODE_UNREGISTER:
 			int id = -1;
 			if(req.getParameter(RwiCommunication.PARAMETER_ID) != null && !req.getParameter(RwiCommunication.PARAMETER_ID).isEmpty()){
@@ -40,6 +42,29 @@ public class SignalingServlet extends HttpServlet{
 			if(id>=0){
 				signalhandler.handleUnregister(id);
 			}
+		//Someone asks for creation of an IS
+		case RwiCommunication.SIGNALING_MODE_ASK_FOR_IS:
+			if(req.getParameter(RwiCommunication.PARAMETER_PORT) != null && !req.getParameter(RwiCommunication.PARAMETER_PORT).isEmpty()){
+				String port = req.getParameter(RwiCommunication.PARAMETER_PORT);
+				String ip = req.getRemoteAddr();
+				if(req.getParameter(RwiCommunication.PARAMETER_RANGE) != null && !req.getParameter(RwiCommunication.PARAMETER_RANGE).isEmpty()){
+					String temps = req.getParameter(RwiCommunication.PARAMETER_RANGE);
+					String[] tempa = temps.split("-");
+					float[] range = new float[]{Float.parseFloat(tempa[0]),Float.parseFloat(tempa[1]),Float.parseFloat(tempa[2]),Float.parseFloat(tempa[3])};
+					((RootSignalingHandler)signalhandler).handleAskForIs(ip, port,range);
+				}
+			}
+			break;
+		//InfoSystem was created at following IP and PORT
+		case RwiCommunication.SIGNALING_MODE_IS_READY:
+			ipport = retrieveIpAndPort(req);
+			if(req.getParameter(RwiCommunication.PARAMETER_RANGE) != null && !req.getParameter(RwiCommunication.PARAMETER_RANGE).isEmpty()){
+				String temps = req.getParameter(RwiCommunication.PARAMETER_RANGE);
+				String[] tempa = temps.split("-");
+				float[] range = new float[]{Float.parseFloat(tempa[0]),Float.parseFloat(tempa[1]),Float.parseFloat(tempa[2]),Float.parseFloat(tempa[3])};
+				signalhandler.handleInfoSystemReady(ipport[0], ipport[1],range);
+			}
+			break;
 		}	
 	}
 	

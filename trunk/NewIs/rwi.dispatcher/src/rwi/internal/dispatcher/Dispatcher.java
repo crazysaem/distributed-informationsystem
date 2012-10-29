@@ -15,6 +15,7 @@ import rwi.core.interfaces.server.ICommunicationHandler;
 import rwi.core.variables.RwiCommunication;
 
 public class Dispatcher implements ICommunicationHandler {
+	private String myport;
 	private SignalingHandler signalhandler;
 	private ServerManager smanager;
 	private boolean isroot = false;
@@ -32,10 +33,19 @@ public class Dispatcher implements ICommunicationHandler {
 	}
 
 	protected void startup(BundleContext context) {
-		this.smanager = new ServerManager(signalhandler);
-		this.signalhandler =  new SignalingHandler(this,smanager);
+		myport = context.getProperty("org.osgi.service.http.port");
 		if(context.getProperty("rwi.internal.dispatcher.isroot")!=null){
 			isroot = Boolean.parseBoolean(context.getProperty("rwi.internal.dispatcher.isroot"));
+		}
+		if(isroot){
+			System.out.println("Root Dispatcher:");
+			this.smanager = new ServerManager((RootSignalingHandler)signalhandler);
+			this.smanager.getInfoSystem(RwiCommunication.ROOT_ADDRESS, RwiCommunication.ROOT_PORT, new float[]{0,600,0,600});
+			this.signalhandler =  new RootSignalingHandler(this,smanager);
+		}else{
+			System.out.println("Dispatcher:");
+			this.signalhandler =  new SignalingHandler(this);
+			this.smanager = null;
 		}
 		
 		this.objIdGen = new IDGen();
@@ -63,7 +73,7 @@ public class Dispatcher implements ICommunicationHandler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Dispatcher started!");
+		System.out.println("Dispatcher started!");		
 	}
 
 	private NetWorkIS findDispatchTarget(float posX, float posY) {
@@ -128,5 +138,9 @@ public class Dispatcher implements ICommunicationHandler {
 	
 	private void split(NetWorkIS nwis){
 		//TODO initialise Signlaling between all the componentes
+	}
+	
+	public void addInfoSystem(NetWorkIS nwis){
+		infosystems.add(nwis);
 	}
 }
