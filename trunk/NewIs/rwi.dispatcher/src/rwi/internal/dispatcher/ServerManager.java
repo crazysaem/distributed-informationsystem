@@ -11,6 +11,10 @@ public class ServerManager {
 	private boolean rootIsNeeded;
 	private ArrayList<Waiting> waitingqueue;
 
+	public void setSignal(RootSignalingHandler signal){
+		this.signaling = signal;
+	}
+	
 	public ServerManager(RootSignalingHandler signal) {
 		this.available = new ArrayList<>();
 		this.waitingqueue = new ArrayList<>();
@@ -19,11 +23,10 @@ public class ServerManager {
 	}
 
 	public void addFreeServer(String ip, String port) {
+		available.add(new FreeServer(ip, port));
+		System.out.println("Free server added. IP:" + ip + ", Port:" + port);
 		//if some system is waiting for server first handle this
-		if (waitingqueue.isEmpty()) {
-			available.add(new FreeServer(ip, port));
-			System.out.println("Free server added. IP:" + ip + ", Port:" + port);
-		}else{
+		if (!waitingqueue.isEmpty()) {
 			Waiting w = waitingqueue.remove(0);
 			if(w.waitingforIS){
 				makeInfoSystem(w.ip,w.port,w.range);
@@ -43,8 +46,7 @@ public class ServerManager {
 
 	private void makeInfoSystem(String ip, String port, float[] range) {
 		FreeServer free = available.remove(0);
-		boolean created = signaling.sendInfoSystemcreation(free.ip, free.port,
-				range);
+		boolean created = signaling.sendInfoSystemcreation(free.ip, free.port,range);
 		if (created) {
 			signaling.sendNewInfoSystem(ip, port, free.ip, free.port, range);
 		}

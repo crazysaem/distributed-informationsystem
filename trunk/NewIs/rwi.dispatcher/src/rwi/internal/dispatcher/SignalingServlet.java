@@ -1,6 +1,8 @@
 package rwi.internal.dispatcher;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,11 +14,15 @@ import rwi.core.variables.RwiCommunication;
 public class SignalingServlet extends HttpServlet{
 
 	private SignalingHandler signalhandler;	
+	private ExecutorService exservice;
 	
 	public SignalingServlet(SignalingHandler signalhandler) {
 		super();
+		exservice = Executors.newFixedThreadPool(1);
 		this.signalhandler = signalhandler;
 	}
+	
+	
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -31,7 +37,8 @@ public class SignalingServlet extends HttpServlet{
 		//A free server is ready to be used
 		case RwiCommunication.SIGNALING_MODE_SERVERREADY:
 			ipport = retrieveIpAndPort(req);
-			((RootSignalingHandler)signalhandler).handleServerReady(ipport[0],ipport[1]);
+			//((RootSignalingHandler)signalhandler).handleServerReady(ipport[0],ipport[1]);
+			exservice.execute(new Task(ipport[0], ipport[1], mode));
 			break;
 		//An object was unregistered. The ID needs to be removed from all instances.
 		case RwiCommunication.SIGNALING_MODE_UNREGISTER:
@@ -40,7 +47,8 @@ public class SignalingServlet extends HttpServlet{
 				id = Integer.parseInt(req.getParameter(RwiCommunication.PARAMETER_ID));
 			}
 			if(id>=0){
-				signalhandler.handleUnregister(id);
+				//signalhandler.handleUnregister(id);
+				exservice.execute(new Task(id, mode));
 			}
 		//Someone asks for creation of an IS
 		case RwiCommunication.SIGNALING_MODE_ASK_FOR_IS:
@@ -51,7 +59,8 @@ public class SignalingServlet extends HttpServlet{
 					String temps = req.getParameter(RwiCommunication.PARAMETER_RANGE);
 					String[] tempa = temps.split("-");
 					float[] range = new float[]{Float.parseFloat(tempa[0]),Float.parseFloat(tempa[1]),Float.parseFloat(tempa[2]),Float.parseFloat(tempa[3])};
-					((RootSignalingHandler)signalhandler).handleAskForIs(ip, port,range);
+					//((RootSignalingHandler)signalhandler).handleAskForIs(ip, port,range);
+					exservice.execute(new Task(ip, port, range, mode));
 				}
 			}
 			break;
@@ -62,7 +71,8 @@ public class SignalingServlet extends HttpServlet{
 				String temps = req.getParameter(RwiCommunication.PARAMETER_RANGE);
 				String[] tempa = temps.split("-");
 				float[] range = new float[]{Float.parseFloat(tempa[0]),Float.parseFloat(tempa[1]),Float.parseFloat(tempa[2]),Float.parseFloat(tempa[3])};
-				signalhandler.handleInfoSystemReady(ipport[0], ipport[1],range);
+				//signalhandler.handleInfoSystemReady(ipport[0], ipport[1],range);
+				exservice.execute(new Task(req.getRemoteAddr(), ipport[1], range, mode));
 			}
 			break;
 		}	
@@ -78,4 +88,45 @@ public class SignalingServlet extends HttpServlet{
 		}
 		return ipport;
 	}
+	
+	private class Task implements Runnable{
+
+		private String ip,port;
+		private float[] range;
+		private int id,mode;
+		
+		Task(int id,int mode){
+			this.id = id;
+			this.mode = mode;
+		}
+		
+		Task(String ip,String port,int mode){
+			this.ip = ip;
+			this.port = port;
+			this.mode = mode;
+		}
+		
+		Task(String ip,String port,float[] range,int mode){
+			this.ip = ip;
+			this.port = port;
+			this.range =range;
+			this.mode = mode;
+		}
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			if(mode==RwiCommunication.SIGNALING_MODE_IS_READY){
+				signalhandler.handleInfoSystemReady(ip, port, range);
+			}else if(mode==RwiCommunication.SIGNALING_MODE_ASK_FOR_IS){
+				((RootSignalingHandler)signalhandler).handleAskForIs(ip, port,range);
+			}else if(mode==RwiCommunication.SIGNALING_MODE_UNREGISTER){
+				signalhandler.handleUnregister(id);
+			}else if(mode==RwiCommunication.SIGNALING_MODE_SERVERREADY){
+				((RootSignalingHandler)signalhandler).handleServerReady(ip,port);
+			}
+		}
+		
+	}
+	
+	
 }

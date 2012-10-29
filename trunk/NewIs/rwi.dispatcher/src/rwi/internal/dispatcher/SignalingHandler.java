@@ -33,6 +33,7 @@ public class SignalingHandler {
 	//new InfoSystem was created successfully
 	public void handleInfoSystemReady(String ip,String port,float[] range){
 		NetWorkIS s = new NetWorkIS(ip, port,range);
+		dis.addInfoSystem(s);
 	}
 	
 	public void setState(int state){
