@@ -27,18 +27,20 @@ public class SignalingServlet extends HttpServlet{
 			mode = Integer.parseInt(req.getParameter(RwiCommunication.PARAMETER_SIGNALING_MODE));
 		}
 		String[] ipport;
-		switch(mode){
-		case RwiCommunication.SIGNALING_MODE_REGIS:
-		case RwiCommunication.SIGNALING_MODE_REGDISP:
-			ipport = retrieveIpAndPort(req);
-			signalhandler.handleRegistration(mode, ipport[0],ipport[1]);
-			break;
+		switch(mode){		
 		case RwiCommunication.SIGNALING_MODE_SERVERREADY:
 			ipport = retrieveIpAndPort(req);
 			signalhandler.handleServerReady(ipport[0],ipport[1]);
 			break;
-		}
-		
+		case RwiCommunication.SIGNALING_MODE_UNREGISTER:
+			int id = -1;
+			if(req.getParameter(RwiCommunication.PARAMETER_ID) != null && !req.getParameter(RwiCommunication.PARAMETER_ID).isEmpty()){
+				id = Integer.parseInt(req.getParameter(RwiCommunication.PARAMETER_ID));
+			}
+			if(id>=0){
+				signalhandler.handleUnregister(id);
+			}
+		}	
 	}
 	
 	private String[] retrieveIpAndPort(HttpServletRequest req){

@@ -11,6 +11,7 @@ public class RwiCommunication {
 	public static final String PARAMETER_SIZEY = "sizeY";	
 	public static final String PARAMETER_IPADR = "ipadr";
 	public static final String PARAMETER_PORT = "port";
+	public static final String PARAMETER_RANGE = "range";
 	public static final String PARAMETER_INITDISP = "init_disp";
 	public static final String PARAMETER_INITIS = "init_is";
 	
@@ -20,6 +21,7 @@ public class RwiCommunication {
 	public static final int SIGNALING_MODE_SERVERREADY = 2;
 	public static final int SIGNALING_MODE_INIT_DISP = 3;
 	public static final int SIGNALING_MODE_INIT_IS = 4;
+	public static final int SIGNALING_MODE_UNREGISTER = 5;
 	
 	
 	public static final String REGISTER_SERVLET = "/register";

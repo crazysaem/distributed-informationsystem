@@ -116,8 +116,7 @@ public class Dispatcher implements ICommunicationHandler {
 	@Override
 	public void unregister(int id) {
 		removeMapping(id);
-		NetWorkIS nwis = findDispatchTarget(id);
-		nwis.unregister(id);
+		signalhandler.forwarUnregister(parent.getIp(), parent.getPort(), id);
 	}
 	
 	private void addMapping(int id, NetWorkIS is){

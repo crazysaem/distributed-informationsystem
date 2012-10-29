@@ -19,7 +19,7 @@ public class ServerManager {
 
 	public String[] retrieveDispatcher(){
 		FreeServer free = available.remove(0);
-		boolean created = signaling.handleDispatchercreation(free.ip, free.port);
+		boolean created = signaling.sendDispatchercreation(free.ip, free.port);
 		if(created){
 			return new String[]{free.ip,free.port};
 		}else{

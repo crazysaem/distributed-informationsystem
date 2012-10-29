@@ -12,23 +12,28 @@ public class SignalingHandler {
 		this.dis = dis;
 		this.smanager = smanager;
 	}
-	/**
-	 * 
-	 * @param type 0 = IS, 1 = DISPATCHER
-	 * @param ip
-	 * @param port
-	 */
-	public void handleRegistration(int type,String ip,String port){
-		NetWorkIS nwis = new NetWorkIS(ip, port, 0, 1000, 0, 1000);
-	}
-	
+		
 	public void handleServerReady(String ip,String port){
 		smanager.addFreeServer(ip, port);
 	}
 	
-	public boolean handleDispatchercreation(String ip,String port){
+	public void handleUnregister(int id){
+		dis.unregister(id);
+	}
+	
+	public boolean sendDispatchercreation(String ip,String port){
 		if(SignalTransfer.initDispatcherCreation(ip, port).equals("created"))
 			return true;
 		else return false;
+	}
+	
+	public boolean sendInfoSystemcreation(String ip,String port,float[] range){
+		if(SignalTransfer.initInformationSystemCreation(ip, port, range).equals("created"))
+			return true;
+		else return false;
+	}
+	
+	public void forwarUnregister(String ip,String port,int id){
+		SignalTransfer.forwardUnregister(ip, port, id);
 	}
 }
