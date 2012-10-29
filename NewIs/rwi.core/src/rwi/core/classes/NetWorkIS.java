@@ -1,7 +1,6 @@
-package rwi.internal.dispatcher;
+package rwi.core.classes;
 
 import rwi.core.interfaces.server.ICommunicationHandler;
-import rwi.internal.dispatcher.communication.DataTransfer;
 
 public class NetWorkIS implements ICommunicationHandler{
 

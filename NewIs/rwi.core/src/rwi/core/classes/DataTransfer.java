@@ -1,6 +1,5 @@
-package rwi.internal.dispatcher.communication;
+package rwi.core.classes;
 
-import rwi.core.classes.Requester;
 import rwi.core.variables.RwiCommunication;
 
 public class DataTransfer extends Requester {
