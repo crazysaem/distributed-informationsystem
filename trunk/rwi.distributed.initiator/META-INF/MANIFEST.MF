@@ -7,6 +7,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Service-Component: OSGI-INF/component.xml
 Import-Package: javax.servlet;version="2.5.0",
  javax.servlet.http;version="2.5.0",
+ javax.swing.plaf.synth,
  org.osgi.framework;version="1.6.0",
  org.osgi.service.http;version="1.2.1",
  rwi.distributed.core.variables

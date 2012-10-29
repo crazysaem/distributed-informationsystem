@@ -1,4 +1,4 @@
-package rwi.distributed.internal.dispatcher;
+package rwi.distributed.internal.dispatcher.communication;
 
 import java.io.IOException;
 
@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import rwi.distributed.internal.dispatcher.Dispatcher;
 
 public class PositionServlet extends HttpServlet{
 	

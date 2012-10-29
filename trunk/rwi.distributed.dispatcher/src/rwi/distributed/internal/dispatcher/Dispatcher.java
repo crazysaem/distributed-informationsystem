@@ -12,9 +12,12 @@ import rwi.distributed.core.classes.IDGen;
 import rwi.distributed.core.classes.LocalInfoSystem;
 import rwi.distributed.core.interfaces.server.IIS;
 import rwi.distributed.core.variables.RwiCommunication;
+import rwi.distributed.internal.dispatcher.communication.PositionServlet;
+import rwi.distributed.internal.dispatcher.communication.RegisterServlet;
 
 public class Dispatcher {
 
+	private String parentIP;
 	private HttpService http;
 	ArrayList<IIS> infosystems;
 	HashMap<Integer, IIS> idMap;

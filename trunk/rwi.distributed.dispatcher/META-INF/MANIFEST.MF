@@ -4,6 +4,10 @@ Bundle-Name: Dispatcher
 Bundle-SymbolicName: rwi.distributed.dispatcher
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: rwi.distributed.core.classes,
- rwi.distributed.core.interfaces.server
+Import-Package: javax.servlet;version="2.5.0",
+ javax.servlet.http;version="2.5.0",
+ org.osgi.service.http;version="1.2.1",
+ rwi.distributed.core.classes,
+ rwi.distributed.core.interfaces.server,
+ rwi.distributed.core.variables
 Service-Component: OSGI-INF/component.xml
