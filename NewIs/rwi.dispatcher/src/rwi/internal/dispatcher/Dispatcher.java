@@ -39,12 +39,14 @@ public class Dispatcher implements ICommunicationHandler {
 		}
 		if(isroot){
 			System.out.println("Root Dispatcher:");
-			this.smanager = new ServerManager((RootSignalingHandler)signalhandler);
-			this.smanager.getInfoSystem(RwiCommunication.ROOT_ADDRESS, RwiCommunication.ROOT_PORT, new float[]{0,600,0,600});
+			this.smanager = new ServerManager(null);
 			this.signalhandler =  new RootSignalingHandler(this,smanager);
+			this.smanager.setSignal((RootSignalingHandler)signalhandler);
+			//this.smanager.getInfoSystem(RwiCommunication.ROOT_ADDRESS, RwiCommunication.ROOT_PORT, new float[]{0,600,0,600});
 		}else{
 			System.out.println("Dispatcher:");
 			this.signalhandler =  new SignalingHandler(this);
+			signalhandler.askForInfoSystem(myport, new float[]{0,600,0,600});
 			this.smanager = null;
 		}
 		
