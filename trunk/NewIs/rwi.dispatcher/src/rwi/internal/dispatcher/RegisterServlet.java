@@ -8,13 +8,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import rwi.core.interfaces.server.ICommunicationHandler;
 import rwi.core.variables.RwiCommunication;
 
 public class RegisterServlet extends HttpServlet {
 
-	private Dispatcher dis;
+	private ICommunicationHandler dis;
 
-	public RegisterServlet(Dispatcher dis) {
+	public RegisterServlet(ICommunicationHandler dis) {
 		this.dis = dis;
 	}
 

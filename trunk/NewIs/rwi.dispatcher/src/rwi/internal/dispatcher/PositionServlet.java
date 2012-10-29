@@ -8,11 +8,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import rwi.core.interfaces.server.ICommunicationHandler;
+
 public class PositionServlet extends HttpServlet{
 	
-	private Dispatcher dis;
+	private ICommunicationHandler dis;
 	
-	public PositionServlet(Dispatcher dis){
+	public PositionServlet(ICommunicationHandler dis){
 		this.dis = dis;
 	}
 
