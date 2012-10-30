@@ -1,4 +1,4 @@
-package rwi.internal.dispatcher;
+package rwi.internal.dispatcher.communication;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;

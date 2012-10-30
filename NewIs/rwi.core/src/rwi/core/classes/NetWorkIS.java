@@ -83,4 +83,11 @@ public class NetWorkIS implements ICommunicationHandler{
 	public String toString(){
 		return this.ipaddress+":"+this.port+" with Range{X:"+range[0]+"-"+range[1]+";Y:"+range[2]+"-"+range[3]+"}";
 	}
+	
+	public void updateRange(float[] range){
+		//update localy
+		this.range = range;
+		//update the system in the network
+		NWISSignalingHandler.updateRange(this, range);
+	}
 }

@@ -39,4 +39,7 @@ public class RwiCommunication {
 	public static final String REQUESTMETHOD_POST = "POST";
 	public static final String REQUESTMETHOD_GET = "GET";
 	public static final String REQUESTMETHOD_DELETE = "DELETE";
+	
+	public static final int SPLIT_METHOD_HALF = 0;
+	public static final int SPLIT_METHOD_QUARTER = 1;
 }

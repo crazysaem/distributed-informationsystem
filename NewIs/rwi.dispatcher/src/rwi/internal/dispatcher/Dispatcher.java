@@ -13,6 +13,12 @@ import rwi.core.classes.IDGen;
 import rwi.core.classes.NetWorkIS;
 import rwi.core.interfaces.server.ICommunicationHandler;
 import rwi.core.variables.RwiCommunication;
+import rwi.internal.dispatcher.communication.DispatchSignalingHandler;
+import rwi.internal.dispatcher.communication.PositionServlet;
+import rwi.internal.dispatcher.communication.RegisterServlet;
+import rwi.internal.dispatcher.communication.RootSignalingHandler;
+import rwi.internal.dispatcher.communication.SignalTransfer;
+import rwi.internal.dispatcher.communication.SignalingServlet;
 
 public class Dispatcher implements ICommunicationHandler {
 	private String myport;
@@ -145,10 +151,37 @@ public class Dispatcher implements ICommunicationHandler {
 		this.idMap.remove(id);
 	}
 
-	private void split(NetWorkIS nwis) {
-		// TODO initialise Signlaling between all the componentes
+	public void split(NetWorkIS nwis, int mode, NetWorkIS NewNwis) {
+		if(mode == RwiCommunication.SPLIT_METHOD_HALF){
+			float xl = nwis.getRange()[1]-nwis.getRange()[0];
+			float yl = nwis.getRange()[3]-nwis.getRange()[2];
+			float[] range1 =  new float[4];
+			float[] range2 =  new float[4];
+			System.arraycopy(nwis.getRange(), 0, range1, 0, 4);
+			System.arraycopy(nwis.getRange(), 0, range2, 0, 4);
+			if(xl <= yl){				
+				range1[1] = range1[0]+xl/2;
+				range2[0] = range2[0] +xl/2;
+			}else{
+				range1[3] = range1[2]+yl/2;
+				range2[2] = range2[2] +yl/2;
+			}
+			nwis.updateRange(range1);
+			NewNwis = new NetWorkIS(NewNwis.getIp(), NewNwis.getPort(), range2);
+			if(signalhandler.setIsParentAndRange(NewNwis, myport)){
+				infosystems.add(NewNwis);
+				System.out.println("Added IS: "+NewNwis.toString());
+			}
+			
+		}else if(mode == RwiCommunication.SPLIT_METHOD_HALF){
+			//TODO
+		}
 	}
 
+	public String getPort(){
+		return this.myport;
+	}
+	
 	public void addInfoSystem(NetWorkIS nwis) {
 		nwis = new NetWorkIS(nwis.getIp(), nwis.getPort(), range);
 		for(int x=0;x<=4;x++){
@@ -158,6 +191,7 @@ public class Dispatcher implements ICommunicationHandler {
 		}
 		infosystems.add(nwis);
 		System.out.println("Added IS: "+nwis.toString());
+		signalhandler.handleSplitRequest(infosystems.get(0), RwiCommunication.SPLIT_METHOD_HALF);
 	}
 
 	public void setParentAndRange(NetWorkIS nwis, float[] range) {

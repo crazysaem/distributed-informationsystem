@@ -2,6 +2,7 @@ package rwi.internal.dispatcher;
 
 import java.util.ArrayList;
 
+import rwi.internal.dispatcher.communication.RootSignalingHandler;
 import rwi.internal.dispatcher.communication.SignalTransfer;
 
 public class ServerManager {
