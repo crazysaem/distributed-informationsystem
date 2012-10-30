@@ -72,11 +72,12 @@ protected static String sendRequest(String IPAddress, String Port,
 	
 	protected static String generateParamter(String parameter, float[] value) {
 		String temp = parameter + "=";
+		String par = "";
 		for(float f:value){
-			temp+=","+f;
+			par+="-"+f;
 		}
-		temp.replaceFirst(",","");
-		temp += "&";
+		par=par.substring(1);
+		temp += par+"&";
 		return temp;
 	}
 	

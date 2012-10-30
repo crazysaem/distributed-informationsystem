@@ -30,8 +30,7 @@ public class InitServlet extends HttpServlet{
 		
 		switch(mode){
 		case RwiCommunication.SIGNALING_MODE_INIT_DISP:
-			//i.createDispatcher();
-			System.out.println("ds created..");
+			i.createDispatcher();
 			resp.getWriter().write("created");
 			break;
 		case RwiCommunication.SIGNALING_MODE_INIT_IS:

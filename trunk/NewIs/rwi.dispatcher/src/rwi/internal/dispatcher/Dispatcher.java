@@ -19,11 +19,11 @@ public class Dispatcher implements ICommunicationHandler {
 	private DispatchSignalingHandler signalhandler;
 	private ServerManager smanager;
 	private boolean isroot = false;
-	
+
 	private float[] range;
 	private NetWorkIS parent;
 	private HttpService http;
-	
+
 	ArrayList<NetWorkIS> infosystems;
 	HashMap<Integer, NetWorkIS> idMap;
 
@@ -34,28 +34,32 @@ public class Dispatcher implements ICommunicationHandler {
 	}
 
 	protected void startup(BundleContext context) {
+		//context.installBundle(location)
 		this.range = new float[4];
 		myport = context.getProperty("org.osgi.service.http.port");
-		if(context.getProperty("rwi.internal.dispatcher.isroot")!=null){
-			isroot = Boolean.parseBoolean(context.getProperty("rwi.internal.dispatcher.isroot"));
+		if (context.getProperty("rwi.internal.dispatcher.isroot") != null) {
+			isroot = Boolean.parseBoolean(context
+					.getProperty("rwi.internal.dispatcher.isroot"));
 		}
-		if(isroot){
+		if (isroot) {
 			System.out.println("Root Dispatcher:");
 			this.smanager = new ServerManager(null);
-			this.signalhandler =  new RootSignalingHandler(this,smanager);
-			this.smanager.setSignal((RootSignalingHandler)signalhandler);
-			//this.smanager.getInfoSystem(RwiCommunication.ROOT_ADDRESS, RwiCommunication.ROOT_PORT, new float[]{0,600,0,600});
-		}else{
+			this.signalhandler = new RootSignalingHandler(this, smanager);
+			this.smanager.setSignal((RootSignalingHandler) signalhandler);
+			this.range = new float[] { 0, 50, 0, 50 };
+		} else {
 			System.out.println("Dispatcher:");
-			this.signalhandler =  new DispatchSignalingHandler(this);
+			this.signalhandler = new DispatchSignalingHandler(this);
 			signalhandler.askForInfoSystem(myport);
 			this.smanager = null;
+			signalhandler.askForInfoSystem(myport);
+			this.range = new float[] { 0, 50, 0, 50 };
 		}
-		
+
 		this.objIdGen = new IDGen();
 		this.infosystems = new ArrayList<>();
 		this.idMap = new HashMap<>();
-		
+
 		// bind the servlets
 		try {
 			RegisterServlet regservlet = new RegisterServlet(this);
@@ -66,8 +70,8 @@ public class Dispatcher implements ICommunicationHandler {
 					null, null);
 			http.registerServlet(RwiCommunication.POSITION_SERVLET, posservlet,
 					null, null);
-			http.registerServlet(RwiCommunication.SIGNALING_SERVLET, signalservlet,
-					null, null);
+			http.registerServlet(RwiCommunication.SIGNALING_SERVLET,
+					signalservlet, null, null);
 
 			System.out.println("Servlets registered.");
 		} catch (ServletException e) {
@@ -77,7 +81,7 @@ public class Dispatcher implements ICommunicationHandler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Dispatcher started!");		
+		System.out.println("Dispatcher started!");
 	}
 
 	private NetWorkIS findDispatchTarget(float posX, float posY) {
@@ -97,21 +101,23 @@ public class Dispatcher implements ICommunicationHandler {
 	}
 
 	@Override
-	public void register(int id, int type, float[] pos, float[] size,int state, String ipaddress, String port) {
+	public void register(int id, int type, float[] pos, float[] size,
+			int state, String ipaddress, String port) {
 		NetWorkIS nwis = findDispatchTarget(pos[0], pos[1]);
-		
+
 		addMapping(id, nwis);
 		nwis.register(id, type, pos, size, state, ipaddress, port);
 	}
 
 	@Override
-	public int register(int type, float[] pos, float[] size, int state,String ipaddress, String port) {
+	public int register(int type, float[] pos, float[] size, int state,
+			String ipaddress, String port) {
 		int id = objIdGen.nextId();
 
 		NetWorkIS nwis = findDispatchTarget(pos[0], pos[1]);
 		addMapping(id, nwis);
 		nwis.register(id, type, pos, size, state, ipaddress, port);
-		
+
 		return id;
 	}
 
@@ -132,19 +138,28 @@ public class Dispatcher implements ICommunicationHandler {
 		removeMapping(id);
 		signalhandler.forwarUnregister(parent.getIp(), parent.getPort(), id);
 	}
-	
-	private void addMapping(int id, NetWorkIS is){
+
+	private void addMapping(int id, NetWorkIS is) {
 		this.idMap.put(id, is);
 	}
-	private void removeMapping(int id){
+
+	private void removeMapping(int id) {
 		this.idMap.remove(id);
 	}
-	
-	private void split(NetWorkIS nwis){
-		//TODO initialise Signlaling between all the componentes
+
+	private void split(NetWorkIS nwis) {
+		// TODO initialise Signlaling between all the componentes
 	}
-	
-	public void addInfoSystem(NetWorkIS nwis){
-		infosystems.add(nwis);		
+
+	public void addInfoSystem(NetWorkIS nwis) {
+		infosystems.add(nwis);
+		signalhandler.setIsParentAndRange(nwis, myport, range);
+	}
+
+	public void setParentAndRange(NetWorkIS nwis, float[] range) {
+		if (!isroot) {
+			this.parent = nwis;
+			this.range = range;
+		}
 	}
 }

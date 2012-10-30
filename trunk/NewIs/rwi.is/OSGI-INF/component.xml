@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="startup" enabled="true" name="rwi.is">
    <implementation class="rwi.internal.is.InformationSystem"/>
+   <reference bind="setHttp" cardinality="1..1" interface="org.osgi.service.http.HttpService" name="setHttpService" policy="static"/>
 </scr:component>

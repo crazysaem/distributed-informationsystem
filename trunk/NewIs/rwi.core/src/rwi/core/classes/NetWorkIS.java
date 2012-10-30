@@ -77,5 +77,9 @@ public class NetWorkIS implements ICommunicationHandler{
 	public String getPort(){
 		return this.port;
 	}
+	
+	public boolean isRangeEmpty(){
+		return (minX<0 || maxX<0 || minY<0 || maxY <0);
+	}
 
 }

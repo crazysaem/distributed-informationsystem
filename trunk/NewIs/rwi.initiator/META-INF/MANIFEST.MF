@@ -10,4 +10,4 @@ Import-Package: javax.servlet;version="2.5.0",
  org.osgi.service.http;version="1.2.1",
  rwi.core.classes,
  rwi.core.variables
-Service-Component: OSGI-INF/component.xml
+Bundle-Activator: rwi.internal.initiator.Initiator
