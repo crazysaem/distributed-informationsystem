@@ -1,7 +1,8 @@
-package rwi.internal.dispatcher;
+package rwi.internal.dispatcher.communication;
 
 import rwi.core.classes.NetWorkIS;
-import rwi.internal.dispatcher.communication.SignalTransfer;
+import rwi.internal.dispatcher.Dispatcher;
+import rwi.internal.dispatcher.ServerManager;
 
 public class RootSignalingHandler extends DispatchSignalingHandler{
 
@@ -41,7 +42,7 @@ public class RootSignalingHandler extends DispatchSignalingHandler{
 
 	public void sendNewInfoSystem(String ip,String port,String isip,String isport){
 		if(ip.equals("root")&&port.equals("root")){
-			dis.addInfoSystem(new NetWorkIS(isip, isport));
+			handleInfoSystemReady(new NetWorkIS(isip, isport));
 		}else{
 			SignalTransfer.sendNewInfoSystem(ip, port, isip, isport);
 		}

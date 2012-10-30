@@ -24,9 +24,9 @@ public class Initiator implements BundleActivator {
 
 	public void createDispatcher() {
 		try {
-			bundle = context.getBundle(21);
+			bundle = context.getBundle("file:C:/Users/Mr.N0I3oDy/workspace/Plugins/rwi.dispatcher_1.0.0.201210301621.jar");
 			if(bundle==null)
-				bundle = context.installBundle("file:C:/Users/Mr.N0I3oDy/workspace/InfoSystem/rwi.dispatcher");
+				bundle = context.installBundle("file:C:/Users/Mr.N0I3oDy/workspace/Plugins/rwi.dispatcher_1.0.0.201210301621.jar");
 			System.out.println("Dispatcher installed.");
 			bundle.start();					
 		} catch (BundleException e) {
