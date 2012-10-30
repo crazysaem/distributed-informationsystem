@@ -12,10 +12,8 @@ public class DataTransfer extends Requester {
 		Parameters += generateParamter(RwiCommunication.PARAMETER_ID, id);
 		Parameters += generateParamter(RwiCommunication.PARAMETER_TYPE, type);
 		Parameters += generateParamter(RwiCommunication.PARAMETER_STATE, state);
-		Parameters += generateParamter(RwiCommunication.PARAMETER_POSX, pos[0]);
-		Parameters += generateParamter(RwiCommunication.PARAMETER_POSY, pos[1]);
-		Parameters += generateParamter(RwiCommunication.PARAMETER_SIZEX, size[0]);
-		Parameters += generateParamter(RwiCommunication.PARAMETER_SIZEY, size[1]);
+		Parameters += generateParamter(RwiCommunication.PARAMETER_POSITION, pos);
+		Parameters += generateParamter(RwiCommunication.PARAMETER_SIZE, size);
 		Parameters += generateParamter(RwiCommunication.PARAMETER_IPADR, clientIp);
 		Parameters += generateParamter(RwiCommunication.PARAMETER_PORT, clientPort);
 
@@ -28,8 +26,7 @@ public class DataTransfer extends Requester {
 	public static void forwardUpdatePos(String IPAddress,String Port,int id,float[] pos){
 		String Parameters = "";
 		Parameters += generateParamter(RwiCommunication.PARAMETER_ID, id);
-		Parameters += generateParamter(RwiCommunication.PARAMETER_POSX, pos[0]);
-		Parameters += generateParamter(RwiCommunication.PARAMETER_POSY, pos[1]);
+		Parameters += generateParamter(RwiCommunication.PARAMETER_POSITION, pos);
 		
 		// send request
 		sendRequest(IPAddress, Port,

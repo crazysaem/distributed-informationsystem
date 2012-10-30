@@ -38,30 +38,47 @@ public class RegisterServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		int type = -1;
-		float posX = -1;
-		float posY = -1;
+		int id = -1;
+		int state = -1;
+		float[] pos = null;
+		float[] size = null;
+		String ip = "";
+		String port = "";
 		// catch parameters
-
-		if (req.getParameter(RwiCommunication.PARAMETER_POSX) != null
-				&& !req.getParameter(RwiCommunication.PARAMETER_POSX).isEmpty())
-			posX = Float.parseFloat(req
-					.getParameter(RwiCommunication.PARAMETER_POSX));
-		if (req.getParameter(RwiCommunication.PARAMETER_POSY) != null
-				&& !req.getParameter(RwiCommunication.PARAMETER_POSY).isEmpty())
-			posY = Float.parseFloat(req
-					.getParameter(RwiCommunication.PARAMETER_POSY));
-		if (req.getParameter(RwiCommunication.PARAMETER_TYPE) != null
-				&& !req.getParameter(RwiCommunication.PARAMETER_TYPE).isEmpty())
-			type = Integer.parseInt(req
-					.getParameter(RwiCommunication.PARAMETER_TYPE));
+		if (req.getParameter(RwiCommunication.PARAMETER_ID) != null && !req.getParameter(RwiCommunication.PARAMETER_ID).isEmpty())
+			id = Integer.parseInt(req.getParameter(RwiCommunication.PARAMETER_ID));
 		
-		float[] size = {3,2};
-		int state = 0;
-		String ipaddress = req.getRemoteAddr();
-		String port = "8080";
+		if (req.getParameter(RwiCommunication.PARAMETER_POSITION) != null && !req.getParameter(RwiCommunication.PARAMETER_POSITION).isEmpty()){
+			String ptemp = req.getParameter(RwiCommunication.PARAMETER_POSITION);
+			String[] t = ptemp.split("-");
+			pos = new float[]{Float.parseFloat(t[0]),Float.parseFloat(t[1])};
+		}
 		
-		resp.setContentType("text/html;charset=UTF-8");
-		resp.getWriter().write("" + dis.register(type, new float[]{posX, posY},size, state, ipaddress, port));		
+		if (req.getParameter(RwiCommunication.PARAMETER_TYPE) != null && !req.getParameter(RwiCommunication.PARAMETER_TYPE).isEmpty())
+			type = Integer.parseInt(req.getParameter(RwiCommunication.PARAMETER_TYPE));
+		
+		if (req.getParameter(RwiCommunication.PARAMETER_STATE) != null && !req.getParameter(RwiCommunication.PARAMETER_STATE).isEmpty())
+			state= Integer.parseInt(req.getParameter(RwiCommunication.PARAMETER_STATE));
+		else state = 0;
+		if (req.getParameter(RwiCommunication.PARAMETER_SIZE) != null && !req.getParameter(RwiCommunication.PARAMETER_SIZE).isEmpty()){
+			String stemp = req.getParameter(RwiCommunication.PARAMETER_SIZE);
+			String[] s = stemp.split("-");
+			size = new float[]{Float.parseFloat(s[0]),Float.parseFloat(s[1])};
+		}
+		
+		if (req.getParameter(RwiCommunication.PARAMETER_IPADR) != null && !req.getParameter(RwiCommunication.PARAMETER_IPADR).isEmpty()){
+			ip = req.getParameter(RwiCommunication.PARAMETER_IPADR);
+			if(ip.equals("127.0.0.1") || ip.equals("0:0:0:0:0:0:0:1")){
+				ip = req.getRemoteAddr();
+			}
+		}
+		if (req.getParameter(RwiCommunication.PARAMETER_PORT) != null && !req.getParameter(RwiCommunication.PARAMETER_PORT).isEmpty())
+			port = req.getParameter(RwiCommunication.PARAMETER_PORT);
+						
+		if(id>=0 && type >= 0 && size != null && pos !=null && state >=0 && !ip.equals("") && !port.equals(""))
+			dis.register(id, type, pos, size, state, ip, port);
+		
+		//resp.setContentType("text/html;charset=UTF-8");
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package rwi.internal.dispatcher;
 
 import rwi.core.classes.NetWorkIS;
+import rwi.core.variables.RwiCommunication;
 import rwi.internal.dispatcher.communication.SignalTransfer;
 
 public class DispatchSignalingHandler {
@@ -37,8 +38,9 @@ public class DispatchSignalingHandler {
 		dis.addInfoSystem(s);
 	}
 	
-	public void setIsParentAndRange(NetWorkIS target,String ownport,float[] range){
-		SignalTransfer.sendParentAndRange(target, ownport, range);
+	public boolean setIsParentAndRange(NetWorkIS target,String ownport){
+		String result = SignalTransfer.sendParentAndRange(target, ownport, target.getRange());
+		return result.equals(RwiCommunication.READY);
 	}
 	
 	public void setState(int state){

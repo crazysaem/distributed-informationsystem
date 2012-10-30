@@ -4,13 +4,11 @@ package rwi.core.variables;
 public class RwiCommunication {
 	public static final String READY = "ready";
 	
-	public static final String PARAMETER_POSX = "posX";
-	public static final String PARAMETER_POSY = "posY";
+	public static final String PARAMETER_POSITION = "pos";
 	public static final String PARAMETER_ID = "id";
 	public static final String PARAMETER_TYPE = "type";
 	public static final String PARAMETER_STATE = "state";
-	public static final String PARAMETER_SIZEX = "sizeX";
-	public static final String PARAMETER_SIZEY = "sizeY";	
+	public static final String PARAMETER_SIZE = "size";	
 	public static final String PARAMETER_IPADR = "ipadr";
 	public static final String PARAMETER_PORT = "port";
 	public static final String PARAMETER_RANGE = "range";

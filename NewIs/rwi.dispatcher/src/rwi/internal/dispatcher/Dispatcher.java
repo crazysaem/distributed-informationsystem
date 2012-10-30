@@ -52,7 +52,6 @@ public class Dispatcher implements ICommunicationHandler {
 			this.signalhandler = new DispatchSignalingHandler(this);
 			signalhandler.askForInfoSystem(myport);
 			this.smanager = null;			
-			this.range = new float[] { 0, 50, 0, 50 };
 		}
 
 		this.objIdGen = new IDGen();
@@ -151,8 +150,14 @@ public class Dispatcher implements ICommunicationHandler {
 	}
 
 	public void addInfoSystem(NetWorkIS nwis) {
+		nwis = new NetWorkIS(nwis.getIp(), nwis.getPort(), range);
+		for(int x=0;x<=4;x++){
+			if(signalhandler.setIsParentAndRange(nwis, myport)){
+				break;
+				}
+		}
 		infosystems.add(nwis);
-		signalhandler.setIsParentAndRange(nwis, myport, range);
+		System.out.println("Added IS: "+nwis.toString());
 	}
 
 	public void setParentAndRange(NetWorkIS nwis, float[] range) {
