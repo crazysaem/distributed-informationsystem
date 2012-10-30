@@ -27,12 +27,13 @@ public class DispatchSignalingHandler {
 	}
 	
 	public void askForInfoSystem(String port){
+		this.state = SIGNALING_STATE_WAITING_FOR_IS;
 		SignalTransfer.askForInfoSystem(port);		
 	}
 	
 	//new InfoSystem was created successfully
-	public void handleInfoSystemReady(String ip,String port,float[] range){
-		NetWorkIS s = new NetWorkIS(ip, port,range);
+	public void handleInfoSystemReady(String ip,String port){
+		NetWorkIS s = new NetWorkIS(ip, port);
 		dis.addInfoSystem(s);
 	}
 	

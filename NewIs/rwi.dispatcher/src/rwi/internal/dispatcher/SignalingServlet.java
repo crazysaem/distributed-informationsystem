@@ -54,26 +54,16 @@ public class SignalingServlet extends HttpServlet{
 		case RwiCommunication.SIGNALING_MODE_ASK_FOR_IS:
 			if(req.getParameter(RwiCommunication.PARAMETER_PORT) != null && !req.getParameter(RwiCommunication.PARAMETER_PORT).isEmpty()){
 				String port = req.getParameter(RwiCommunication.PARAMETER_PORT);
-				String ip = req.getRemoteAddr();
-				if(req.getParameter(RwiCommunication.PARAMETER_RANGE) != null && !req.getParameter(RwiCommunication.PARAMETER_RANGE).isEmpty()){
-					String temps = req.getParameter(RwiCommunication.PARAMETER_RANGE);
-					String[] tempa = temps.split("-");
-					float[] range = new float[]{Float.parseFloat(tempa[0]),Float.parseFloat(tempa[1]),Float.parseFloat(tempa[2]),Float.parseFloat(tempa[3])};
-					//((RootSignalingHandler)signalhandler).handleAskForIs(ip, port,range);
-					exservice.execute(new Task(ip, port, range, mode));
-				}
+				String ip = req.getRemoteAddr();				
+				//((RootSignalingHandler)signalhandler).handleAskForIs(ip, port,range);
+				exservice.execute(new Task(ip, port, mode));				
 			}
 			break;
 		//InfoSystem was created at following IP and PORT
 		case RwiCommunication.SIGNALING_MODE_IS_READY:
-			ipport = retrieveIpAndPort(req);
-			if(req.getParameter(RwiCommunication.PARAMETER_RANGE) != null && !req.getParameter(RwiCommunication.PARAMETER_RANGE).isEmpty()){
-				String temps = req.getParameter(RwiCommunication.PARAMETER_RANGE);
-				String[] tempa = temps.split("-");
-				float[] range = new float[]{Float.parseFloat(tempa[0]),Float.parseFloat(tempa[1]),Float.parseFloat(tempa[2]),Float.parseFloat(tempa[3])};
-				//signalhandler.handleInfoSystemReady(ipport[0], ipport[1],range);
-				exservice.execute(new Task(req.getRemoteAddr(), ipport[1], range, mode));
-			}
+			ipport = retrieveIpAndPort(req);			
+			//signalhandler.handleInfoSystemReady(ipport[0], ipport[1],range);
+			exservice.execute(new Task(req.getRemoteAddr(), ipport[1], mode));			
 			break;
 		}	
 	}
@@ -105,20 +95,13 @@ public class SignalingServlet extends HttpServlet{
 			this.port = port;
 			this.mode = mode;
 		}
-		
-		Task(String ip,String port,float[] range,int mode){
-			this.ip = ip;
-			this.port = port;
-			this.range =range;
-			this.mode = mode;
-		}
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
 			if(mode==RwiCommunication.SIGNALING_MODE_IS_READY){
-				signalhandler.handleInfoSystemReady(ip, port, range);
+				signalhandler.handleInfoSystemReady(ip, port);
 			}else if(mode==RwiCommunication.SIGNALING_MODE_ASK_FOR_IS){
-				((RootSignalingHandler)signalhandler).handleAskForIs(ip, port,range);
+				((RootSignalingHandler)signalhandler).handleAskForIs(ip, port);
 			}else if(mode==RwiCommunication.SIGNALING_MODE_UNREGISTER){
 				signalhandler.handleUnregister(id);
 			}else if(mode==RwiCommunication.SIGNALING_MODE_SERVERREADY){

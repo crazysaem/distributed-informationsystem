@@ -27,16 +27,7 @@ public class SignalingServlet extends HttpServlet{
 			mode = Integer.parseInt(req.getParameter(RwiCommunication.PARAMETER_SIGNALING_MODE));
 		}
 		String[] ipport;
-		switch(mode){
-		case RwiCommunication.SIGNALING_MODE_REGIS:
-		case RwiCommunication.SIGNALING_MODE_REGDISP:
-			ipport = retrieveIpAndPort(req);
-			//signalhandler.handleRegistration(mode, ipport[0],ipport[1]);
-			break;
-		case RwiCommunication.SIGNALING_MODE_SERVERREADY:
-			ipport = retrieveIpAndPort(req);
-			//signalhandler.handleServerReady(ipport[0],ipport[1]);
-			break;
+		switch(mode){		
 		case RwiCommunication.SIGNALING_MODE_SET_PARENT_AND_RANGE:
 			ipport = retrieveIpAndPort(req);
 			float[] range = retrieveRange(req);
@@ -48,10 +39,12 @@ public class SignalingServlet extends HttpServlet{
 	
 	private String[] retrieveIpAndPort(HttpServletRequest req){
 		String[] ipport = new String[2];
-		ipport[0] = req.getRemoteAddr();
-//		if(req.getParameter(RwiCommunication.PARAMETER_IPADR) != null && !req.getParameter(RwiCommunication.PARAMETER_IPADR).isEmpty()){
-//			ipport[0] = req.getParameter(RwiCommunication.PARAMETER_IPADR);
-//		}
+		//ipport[0] = req.getRemoteAddr();
+		if(req.getParameter(RwiCommunication.PARAMETER_IPADR) != null && !req.getParameter(RwiCommunication.PARAMETER_IPADR).isEmpty()){
+			ipport[0] = req.getParameter(RwiCommunication.PARAMETER_IPADR);
+		}else{
+			ipport[0] = req.getRemoteAddr();
+		}
 		if(req.getParameter(RwiCommunication.PARAMETER_PORT) != null && !req.getParameter(RwiCommunication.PARAMETER_PORT).isEmpty()){
 			ipport[1] = req.getParameter(RwiCommunication.PARAMETER_PORT);
 		}

@@ -15,7 +15,7 @@ import rwi.core.interfaces.server.ICommunicationHandler;
 import rwi.core.variables.GlobalVars;
 import rwi.core.variables.RwiCommunication;
 
-public class InformationSystem implements ICommunicationHandler {
+public class InformationSystem  implements ICommunicationHandler{
 
 	private IsSignalingHandler signalHandler;
 	private NetWorkIS parent;
@@ -29,10 +29,14 @@ public class InformationSystem implements ICommunicationHandler {
 	
 
 	protected void setHttp(HttpService value) {
-		this.http = value;
+		System.out.println("setHttp");
+		this.http = value;				
 	}
 
+	
+	
 	protected void startup(BundleContext context) {
+		System.out.println("IS startup...");
 		range = new float[4];
 		signalHandler = new IsSignalingHandler(this);
 		try {
@@ -47,7 +51,7 @@ public class InformationSystem implements ICommunicationHandler {
 			http.registerServlet(RwiCommunication.SIGNALING_SERVLET,
 					signalservlet, null, null);
 
-			System.out.println("Servlets registered.");
+			System.out.println("Servlets registered...");
 		} catch (ServletException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -55,7 +59,6 @@ public class InformationSystem implements ICommunicationHandler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
@@ -96,7 +99,6 @@ public class InformationSystem implements ICommunicationHandler {
 	@Override
 	public void updateState(int id, int state) {
 		// TODO Auto-generated method stub
-
 	}
 
 	protected void updateRoot(int id) {
@@ -105,7 +107,8 @@ public class InformationSystem implements ICommunicationHandler {
 
 	public void setParentAndRange(NetWorkIS nwis,float[] range) {
 		this.parent = nwis;
+		System.out.println("Parent: "+nwis.getIp()+":"+nwis.getPort());
 		this.range = range;
+		System.out.println("Ramge:["+range[0]+"-"+range[1]+"]["+range[2]+"-"+range[3]+"]");
 	}
-
 }

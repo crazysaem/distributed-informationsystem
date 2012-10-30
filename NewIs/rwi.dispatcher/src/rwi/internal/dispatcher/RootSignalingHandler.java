@@ -16,7 +16,7 @@ public class RootSignalingHandler extends DispatchSignalingHandler{
 		smanager.addFreeServer(ip, port);
 	}
 	
-	public void handleAskForIs(String ip,String port,float[] range){
+	public void handleAskForIs(String ip,String port){
 		smanager.getInfoSystem(ip, port);
 	}
 	
