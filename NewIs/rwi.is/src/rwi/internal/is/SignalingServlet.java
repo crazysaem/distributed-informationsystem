@@ -11,9 +11,11 @@ import rwi.core.variables.RwiCommunication;
 
 public class SignalingServlet extends HttpServlet{
 
+	private IsSignalingHandler signalhandler;
 	
-	public SignalingServlet() {
+	public SignalingServlet(IsSignalingHandler signalhandler) {
 		super();
+		this.signalhandler = signalhandler;		
 	}
 	
 	@Override
@@ -35,18 +37,39 @@ public class SignalingServlet extends HttpServlet{
 			ipport = retrieveIpAndPort(req);
 			//signalhandler.handleServerReady(ipport[0],ipport[1]);
 			break;
+		case RwiCommunication.SIGNALING_MODE_SET_PARENT_AND_RANGE:
+			ipport = retrieveIpAndPort(req);
+			float[] range = retrieveRange(req);
+			signalhandler.handleSetParentAndRange(ipport[0], ipport[1], range);	
+			resp.getWriter().write(RwiCommunication.READY);
 		}
 		
 	}
 	
 	private String[] retrieveIpAndPort(HttpServletRequest req){
 		String[] ipport = new String[2];
-		if(req.getParameter(RwiCommunication.PARAMETER_IPADR) != null && !req.getParameter(RwiCommunication.PARAMETER_IPADR).isEmpty()){
-			ipport[0] = req.getParameter(RwiCommunication.PARAMETER_IPADR);
-		}
+		ipport[0] = req.getRemoteAddr();
+//		if(req.getParameter(RwiCommunication.PARAMETER_IPADR) != null && !req.getParameter(RwiCommunication.PARAMETER_IPADR).isEmpty()){
+//			ipport[0] = req.getParameter(RwiCommunication.PARAMETER_IPADR);
+//		}
 		if(req.getParameter(RwiCommunication.PARAMETER_PORT) != null && !req.getParameter(RwiCommunication.PARAMETER_PORT).isEmpty()){
 			ipport[1] = req.getParameter(RwiCommunication.PARAMETER_PORT);
 		}
 		return ipport;
+	}
+	
+	private float[] retrieveRange(HttpServletRequest req){
+		if(req.getParameter(RwiCommunication.PARAMETER_RANGE) != null && !req.getParameter(RwiCommunication.PARAMETER_RANGE).isEmpty()){
+			try{
+			String temps = req.getParameter(RwiCommunication.PARAMETER_RANGE);
+			String[] tempa = temps.split("-");
+			float[] range = new float[]{Float.parseFloat(tempa[0]),Float.parseFloat(tempa[1]),Float.parseFloat(tempa[2]),Float.parseFloat(tempa[3])};
+			return range;
+			}catch(Exception x){
+				return null;
+			}
+		}else{
+			return null;
+		}
 	}
 }

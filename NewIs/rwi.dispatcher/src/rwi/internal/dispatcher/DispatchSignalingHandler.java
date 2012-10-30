@@ -3,12 +3,12 @@ package rwi.internal.dispatcher;
 import rwi.core.classes.NetWorkIS;
 import rwi.internal.dispatcher.communication.SignalTransfer;
 
-public class SignalingHandler {
+public class DispatchSignalingHandler {
 
 	protected Dispatcher dis;
 	protected int state;
 
-	public SignalingHandler(Dispatcher dis) {
+	public DispatchSignalingHandler(Dispatcher dis) {
 		this.dis = dis;
 		this.state = SIGNALING_STATE_NOTHING_TO_DO;
 	}
@@ -26,14 +26,18 @@ public class SignalingHandler {
 			dis.addInfoSystem(nwis);
 	}
 	
-	public void askForInfoSystem(String port,float[] range){
-		SignalTransfer.askForInfoSystem(port,range);		
+	public void askForInfoSystem(String port){
+		SignalTransfer.askForInfoSystem(port);		
 	}
 	
 	//new InfoSystem was created successfully
 	public void handleInfoSystemReady(String ip,String port,float[] range){
 		NetWorkIS s = new NetWorkIS(ip, port,range);
 		dis.addInfoSystem(s);
+	}
+	
+	public void setIsParentAndRange(NetWorkIS target,String ownport,float[] range){
+		SignalTransfer.sendParentAndRange(target, ownport, range);
 	}
 	
 	public void setState(int state){

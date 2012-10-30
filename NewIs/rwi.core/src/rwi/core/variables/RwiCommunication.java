@@ -2,6 +2,8 @@ package rwi.core.variables;
 
 
 public class RwiCommunication {
+	public static final String READY = "ready";
+	
 	public static final String PARAMETER_POSX = "posX";
 	public static final String PARAMETER_POSY = "posY";
 	public static final String PARAMETER_ID = "id";
@@ -24,6 +26,7 @@ public class RwiCommunication {
 	public static final int SIGNALING_MODE_UNREGISTER = 5;
 	public static final int SIGNALING_MODE_ASK_FOR_IS = 6;
 	public static final int SIGNALING_MODE_IS_READY = 7;
+	public static final int SIGNALING_MODE_SET_PARENT_AND_RANGE = 8;
 	
 	
 	public static final String REGISTER_SERVLET = "/register";

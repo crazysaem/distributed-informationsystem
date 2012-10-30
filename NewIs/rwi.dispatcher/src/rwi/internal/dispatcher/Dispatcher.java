@@ -16,10 +16,11 @@ import rwi.core.variables.RwiCommunication;
 
 public class Dispatcher implements ICommunicationHandler {
 	private String myport;
-	private SignalingHandler signalhandler;
+	private DispatchSignalingHandler signalhandler;
 	private ServerManager smanager;
 	private boolean isroot = false;
 	
+	private float[] range;
 	private NetWorkIS parent;
 	private HttpService http;
 	
@@ -33,6 +34,7 @@ public class Dispatcher implements ICommunicationHandler {
 	}
 
 	protected void startup(BundleContext context) {
+		this.range = new float[4];
 		myport = context.getProperty("org.osgi.service.http.port");
 		if(context.getProperty("rwi.internal.dispatcher.isroot")!=null){
 			isroot = Boolean.parseBoolean(context.getProperty("rwi.internal.dispatcher.isroot"));
@@ -45,8 +47,8 @@ public class Dispatcher implements ICommunicationHandler {
 			//this.smanager.getInfoSystem(RwiCommunication.ROOT_ADDRESS, RwiCommunication.ROOT_PORT, new float[]{0,600,0,600});
 		}else{
 			System.out.println("Dispatcher:");
-			this.signalhandler =  new SignalingHandler(this);
-			signalhandler.askForInfoSystem(myport, new float[]{0,600,0,600});
+			this.signalhandler =  new DispatchSignalingHandler(this);
+			signalhandler.askForInfoSystem(myport);
 			this.smanager = null;
 		}
 		
@@ -143,6 +145,6 @@ public class Dispatcher implements ICommunicationHandler {
 	}
 	
 	public void addInfoSystem(NetWorkIS nwis){
-		infosystems.add(nwis);
+		infosystems.add(nwis);		
 	}
 }

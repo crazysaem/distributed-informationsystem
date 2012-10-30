@@ -5,31 +5,40 @@ import java.util.HashMap;
 
 import javax.servlet.ServletException;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
 
+import rwi.core.classes.NetWorkIS;
 import rwi.core.classes.RWIObject;
 import rwi.core.interfaces.server.ICommunicationHandler;
-import rwi.core.variables.RwiCommunication;
 import rwi.core.variables.GlobalVars;
+import rwi.core.variables.RwiCommunication;
 
 public class InformationSystem implements ICommunicationHandler {
-	
+
+	private IsSignalingHandler signalHandler;
+	private NetWorkIS parent;
 	private HttpService http;
+	private float[] range;
+	
 	HashMap<Integer, RWIObject> objectMap;
 	ArrayList<Integer> idlist = new ArrayList<>();
+	
 	private int objcount;
-	SignalingHandler signalHandler;
+	
 
 	protected void setHttp(HttpService value) {
 		this.http = value;
 	}
 
-	protected void startup() {
+	protected void startup(BundleContext context) {
+		range = new float[4];
+		signalHandler = new IsSignalingHandler(this);
 		try {
 			RegisterServlet regservlet = new RegisterServlet(this);
 			PositionServlet posservlet = new PositionServlet(this);
-			SignalingServlet signalservlet = new SignalingServlet();
+			SignalingServlet signalservlet = new SignalingServlet(signalHandler);
 
 			http.registerServlet(RwiCommunication.REGISTER_SERVLET, regservlet,
 					null, null);
@@ -50,13 +59,13 @@ public class InformationSystem implements ICommunicationHandler {
 	}
 
 	@Override
-	public synchronized void register(int id, int type, float[] pos, float[] size,
-			int state, String ipaddress, String port) {
+	public synchronized void register(int id, int type, float[] pos,
+			float[] size, int state, String ipaddress, String port) {
 
 		objcount++;
 		if (type <= GlobalVars.MAXVEHICLETYPE) {
-			objectMap.put(id, new RWIObject(pos, type, state, id, size, ipaddress, port));
-			
+			//objectMap.put(id, new RWIObject(pos, type, state, id, size,ipaddress, port));
+
 		}
 		idlist.add(id);
 	}
@@ -75,14 +84,12 @@ public class InformationSystem implements ICommunicationHandler {
 		idlist.remove(id);
 		updateRoot(id);
 		objcount--;
-		
 
 	}
 
 	@Override
 	public void updatePosition(int id, float[] pos) {
 		// TODO Auto-generated method stub
-		
 
 	}
 
@@ -91,9 +98,14 @@ public class InformationSystem implements ICommunicationHandler {
 		// TODO Auto-generated method stub
 
 	}
-	
-	protected void updateRoot(int id){
+
+	protected void updateRoot(int id) {
 		signalHandler.updateToParent();
-}
+	}
+
+	public void setParentAndRange(NetWorkIS nwis,float[] range) {
+		this.parent = nwis;
+		this.range = range;
+	}
 
 }
