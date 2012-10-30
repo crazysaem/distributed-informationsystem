@@ -27,7 +27,7 @@ public class DispatchSignalingHandler {
 	}
 	
 	public void askForInfoSystem(String port){
-		this.state = SIGNALING_STATE_WAITING_FOR_IS;
+		this.state = SIGNALING_STATE_WAITING_FOR_IS;		
 		SignalTransfer.askForInfoSystem(port);		
 	}
 	

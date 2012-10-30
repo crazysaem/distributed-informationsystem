@@ -1,11 +1,18 @@
 package rwi.internal.dispatcher;
 
+import rwi.core.classes.NetWorkIS;
 import rwi.internal.dispatcher.communication.SignalTransfer;
 
 public class RootSignalingHandler extends DispatchSignalingHandler{
 
 
 	protected ServerManager smanager;
+	
+	@Override
+	public void askForInfoSystem(String port){
+		this.state = SIGNALING_STATE_WAITING_FOR_IS;		
+		smanager.getInfoSystem();
+	}
 	
 	public RootSignalingHandler(Dispatcher dis, ServerManager smanager) {
 		super(dis);
@@ -33,6 +40,10 @@ public class RootSignalingHandler extends DispatchSignalingHandler{
 	}
 
 	public void sendNewInfoSystem(String ip,String port,String isip,String isport){
-		SignalTransfer.sendNewInfoSystem(ip, port, isip, isport);
+		if(ip.equals("root")&&port.equals("root")){
+			dis.addInfoSystem(new NetWorkIS(isip, isport));
+		}else{
+			SignalTransfer.sendNewInfoSystem(ip, port, isip, isport);
+		}
 	}
 }
