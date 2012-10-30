@@ -29,32 +29,32 @@ public class ServerManager {
 		if (!waitingqueue.isEmpty()) {
 			Waiting w = waitingqueue.remove(0);
 			if(w.waitingforIS){
-				makeInfoSystem(w.ip,w.port,w.range);
+				makeInfoSystem(w.ip,w.port);
 			}else{
 				makeDispatcher(w.ip, w.port);
 			}
 		}
 	}
 
-	public void getInfoSystem(String ip, String port, float[] range) {
+	public void getInfoSystem(String ip, String port) {
 		if (available.isEmpty()) {
-			waitingqueue.add(new Waiting(ip, port, true ,range));
+			waitingqueue.add(new Waiting(ip, port, true));
 		} else {
-			makeInfoSystem(ip, port, range);
+			makeInfoSystem(ip, port);
 		}
 	}
 
-	private void makeInfoSystem(String ip, String port, float[] range) {
+	private void makeInfoSystem(String ip, String port) {
 		FreeServer free = available.remove(0);
-		boolean created = signaling.sendInfoSystemcreation(free.ip, free.port,range);
+		boolean created = signaling.sendInfoSystemcreation(free.ip, free.port);
 		if (created) {
-			signaling.sendNewInfoSystem(ip, port, free.ip, free.port, range);
+			signaling.sendNewInfoSystem(ip, port, free.ip, free.port);
 		}
 	}
 
 	public void getDispatcher(String ip, String port) {
 		if (available.isEmpty()) {
-			waitingqueue.add(new Waiting(ip, port, false,null));
+			waitingqueue.add(new Waiting(ip, port, false));
 		} else {
 			makeDispatcher(ip, port);
 		}
@@ -82,13 +82,11 @@ public class ServerManager {
 		private String ip;
 		private String port;
 		private boolean waitingforIS;
-		private float[] range;
 
-		public Waiting(String ip, String port, boolean waitForIs,float[] range) {
+		public Waiting(String ip, String port, boolean waitForIs) {
 			this.ip = ip;
 			this.port = port;
 			this.waitingforIS = waitForIs;
-			this.range = range;
 		}
 	}
 }

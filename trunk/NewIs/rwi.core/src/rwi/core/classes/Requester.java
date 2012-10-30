@@ -69,6 +69,17 @@ protected static String sendRequest(String IPAddress, String Port,
 	protected static String generateParamter(String parameter, String value) {
 		return parameter + "=" + value + "&";
 	}
+	
+	protected static String generateParamter(String parameter, float[] value) {
+		String temp = parameter + "=";
+		for(float f:value){
+			temp+=","+f;
+		}
+		temp.replaceFirst(",","");
+		temp += "&";
+		return temp;
+	}
+	
 	protected static String generateParamter(String parameter, boolean value) {
 		if(value)
 			return parameter + "=" + "true" + "&";

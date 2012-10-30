@@ -13,10 +13,10 @@ import rwi.core.variables.RwiCommunication;
 
 public class SignalingServlet extends HttpServlet{
 
-	private SignalingHandler signalhandler;	
+	private DispatchSignalingHandler signalhandler;	
 	private ExecutorService exservice;
 	
-	public SignalingServlet(SignalingHandler signalhandler) {
+	public SignalingServlet(DispatchSignalingHandler signalhandler) {
 		super();
 		exservice = Executors.newFixedThreadPool(1);
 		this.signalhandler = signalhandler;
