@@ -37,9 +37,9 @@ public class Initiator implements BundleActivator {
 
 	public void createInformationSystem(){		
 		try {
-			bundle = context.getBundle(22);
+			bundle = context.getBundle("file:C:/Users/Mr.N0I3oDy/workspace/Plugins/rwi.is_1.0.0.201210301622.jar");
 			if(bundle==null)
-				bundle = context.installBundle("file:C:/Users/Mr.N0I3oDy/workspace/InfoSystem/rwi.is");
+				bundle = context.installBundle("file:C:/Users/Mr.N0I3oDy/workspace/Plugins/rwi.is_1.0.0.201210301622.jar");
 			bundle.start();
 			System.out.println("InfoSystem installed.");
 		} catch (BundleException e) {

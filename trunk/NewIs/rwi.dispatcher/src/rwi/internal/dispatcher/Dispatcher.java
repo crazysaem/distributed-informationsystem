@@ -38,21 +38,20 @@ public class Dispatcher implements ICommunicationHandler {
 		this.range = new float[4];
 		myport = context.getProperty("org.osgi.service.http.port");
 		if (context.getProperty("rwi.internal.dispatcher.isroot") != null) {
-			isroot = Boolean.parseBoolean(context
-					.getProperty("rwi.internal.dispatcher.isroot"));
+			isroot = Boolean.parseBoolean(context.getProperty("rwi.internal.dispatcher.isroot"));
 		}
 		if (isroot) {
 			System.out.println("Root Dispatcher:");
 			this.smanager = new ServerManager(null);
 			this.signalhandler = new RootSignalingHandler(this, smanager);
 			this.smanager.setSignal((RootSignalingHandler) signalhandler);
+			signalhandler.askForInfoSystem(myport);
 			this.range = new float[] { 0, 50, 0, 50 };
 		} else {
 			System.out.println("Dispatcher:");
 			this.signalhandler = new DispatchSignalingHandler(this);
 			signalhandler.askForInfoSystem(myport);
-			this.smanager = null;
-			signalhandler.askForInfoSystem(myport);
+			this.smanager = null;			
 			this.range = new float[] { 0, 50, 0, 50 };
 		}
 
@@ -161,5 +160,9 @@ public class Dispatcher implements ICommunicationHandler {
 			this.parent = nwis;
 			this.range = range;
 		}
+	}
+
+	public boolean isIsroot() {
+		return isroot;
 	}
 }

@@ -36,6 +36,10 @@ public class ServerManager {
 		}
 	}
 
+	public void getInfoSystem(){
+		getInfoSystem("root", "root");
+	}
+	
 	public void getInfoSystem(String ip, String port) {
 		if (available.isEmpty()) {
 			waitingqueue.add(new Waiting(ip, port, true));
