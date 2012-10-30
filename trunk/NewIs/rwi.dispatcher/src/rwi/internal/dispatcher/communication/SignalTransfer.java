@@ -45,10 +45,10 @@ public class SignalTransfer extends Requester{
 		sendRequest(ip, port, RwiCommunication.SIGNALING_SERVLET, message, RwiCommunication.REQUESTMETHOD_POST);
 	}
 	
-	public static void sendParentAndRange(NetWorkIS target, String ownport,float[] range){
+	public static String sendParentAndRange(NetWorkIS target, String ownport,float[] range){
 		String message =generateParamter(RwiCommunication.PARAMETER_SIGNALING_MODE, RwiCommunication.SIGNALING_MODE_SET_PARENT_AND_RANGE);
 		message+=generateParamter(RwiCommunication.PARAMETER_PORT, ownport);
 		message+=generateParamter(RwiCommunication.PARAMETER_RANGE, range);
-		sendRequest(target.getIp(), target.getPort(), RwiCommunication.SIGNALING_SERVLET, message, RwiCommunication.REQUESTMETHOD_POST);
+		return sendRequest(target.getIp(), target.getPort(), RwiCommunication.SIGNALING_SERVLET, message, RwiCommunication.REQUESTMETHOD_POST);
 	}
 }

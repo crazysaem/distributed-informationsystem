@@ -25,18 +25,16 @@ public class InformationSystem  implements ICommunicationHandler{
 	HashMap<Integer, RWIObject> objectMap;
 	ArrayList<Integer> idlist = new ArrayList<>();
 	
-	private int objcount;
-	
+	private int objcount;	
 
 	protected void setHttp(HttpService value) {
 		System.out.println("setHttp");
 		this.http = value;				
-	}
-
-	
+	}	
 	
 	protected void startup(BundleContext context) {
 		System.out.println("IS startup...");
+		objectMap = new HashMap<>();
 		range = new float[4];
 		signalHandler = new IsSignalingHandler(this);
 		try {
@@ -64,11 +62,11 @@ public class InformationSystem  implements ICommunicationHandler{
 	@Override
 	public synchronized void register(int id, int type, float[] pos,
 			float[] size, int state, String ipaddress, String port) {
-
+		
 		objcount++;
 		if (type <= GlobalVars.MAXVEHICLETYPE) {
-			//objectMap.put(id, new RWIObject(pos, type, state, id, size,ipaddress, port));
-
+			objectMap.put(id, new RWIObject(pos, type, state, id, size,ipaddress, port));
+			System.out.println("Object at:"+pos[0]+"|"+pos[1]);
 		}
 		idlist.add(id);
 	}
@@ -109,6 +107,6 @@ public class InformationSystem  implements ICommunicationHandler{
 		this.parent = nwis;
 		System.out.println("Parent: "+nwis.getIp()+":"+nwis.getPort());
 		this.range = range;
-		System.out.println("Ramge:["+range[0]+"-"+range[1]+"]["+range[2]+"-"+range[3]+"]");
+		System.out.println("Range:["+range[0]+"-"+range[1]+"]["+range[2]+"-"+range[3]+"]");
 	}
 }

@@ -6,37 +6,31 @@ public class NetWorkIS implements ICommunicationHandler{
 
 	private String ipaddress;
 	private String port;
-	private float minX, maxX, minY, maxY;
+	private float[] range;
 	
 	public NetWorkIS(String ip,String port){
 		this.ipaddress = ip;
 		this.port = port;
-		this.minX = -1;
-		this.maxX = -1;
-		this.minY = -1;
-		this.maxY = -1;
+		this.range = null;
 	}
 	
 	public NetWorkIS(String ip,String port,float[] range){
 		this.ipaddress = ip;
 		this.port = port;
-		this.minX = range[0];
-		this.maxX = range[1];
-		this.minY = range[2];
-		this.maxY = range[3];
+		this.range = range;
 	}
 	
 	public NetWorkIS(String ipaddress,String port,float minX, float maxX, float minY, float maxY){
 		this.ipaddress = ipaddress;
 		this.port = port;
-		this.minX = minX;
-		this.maxX = maxX;
-		this.minY = minY;
-		this.maxY = maxY;
+		this.range[0] = minX;
+		this.range[1] = maxX;
+		this.range[2] = minY;
+		this.range[3] = maxY;
 	}
 	
 	public boolean isInRange(float posX, float posY) {
-		if ((minX <= posX && posX <= maxX) && (minY <= posY && posY <= maxY)) {
+		if ((range[0] <= posX && posX <= range[1]) && (range[2] <= posY && posY <= range[3])) {
 			return true;
 		}
 		return false;
@@ -78,8 +72,15 @@ public class NetWorkIS implements ICommunicationHandler{
 		return this.port;
 	}
 	
+	public float[] getRange(){
+		return range;
+	}
+	
 	public boolean isRangeEmpty(){
-		return (minX<0 || maxX<0 || minY<0 || maxY <0);
+		return (range==null);
 	}
 
+	public String toString(){
+		return this.ipaddress+":"+this.port+" with Range{X:"+range[0]+"-"+range[1]+";Y:"+range[2]+"-"+range[3]+"}";
+	}
 }
