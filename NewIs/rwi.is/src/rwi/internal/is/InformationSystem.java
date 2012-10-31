@@ -67,6 +67,8 @@ public class InformationSystem  implements ICommunicationHandler{
 		if (type <= GlobalVars.MAXVEHICLETYPE) {
 			objectMap.put(id, new RWIObject(pos, type, state, id, size,ipaddress, port));
 			System.out.println("Object at:"+pos[0]+"|"+pos[1]);
+		}else{
+			signalHandler.sendSplitRequest(">>>>MYPORT!!!<<<<<", 0);
 		}
 		idlist.add(id);
 	}
