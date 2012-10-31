@@ -109,4 +109,9 @@ public class InformationSystem  implements ICommunicationHandler{
 		this.range = range;
 		System.out.println("Range:["+range[0]+"-"+range[1]+"]["+range[2]+"-"+range[3]+"]");
 	}
+	
+	public void setRange(float[] range){
+		this.range = range;
+		System.out.println("Range changed to:["+range[0]+"-"+range[1]+"]["+range[2]+"-"+range[3]+"]");
+	}
 }
