@@ -21,6 +21,12 @@ public class IsSignalingHandler {
 		
 	}
 	
+
+	public static void sendSplitRequest(String port,int mode){
+		//TODO
+		//Implement
+	}
+	
 	public void handleSetParentAndRange(String ip,String port,float[] range){
 		is.setParentAndRange(new NetWorkIS(ip, port),range);
 	}

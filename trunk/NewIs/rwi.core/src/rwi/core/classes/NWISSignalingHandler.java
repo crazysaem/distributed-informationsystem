@@ -13,5 +13,6 @@ public class NWISSignalingHandler extends Requester {
 		String message = generateParamter(RwiCommunication.PARAMETER_RANGE, newRange);
 		message += generateParamter(RwiCommunication.PARAMETER_SIGNALING_MODE, RwiCommunication.SIGNALING_MODE_UPDATE_RANGE);
 		sendRequest(nwis.getIp(), nwis.getPort(), RwiCommunication.SIGNALING_SERVLET, message, RwiCommunication.REQUESTMETHOD_POST);
-	} 
+	}
+	
 }
