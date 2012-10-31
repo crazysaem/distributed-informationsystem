@@ -3,7 +3,12 @@ package rwi.internal.is;
 import rwi.core.classes.NetWorkIS;
 import rwi.core.interfaces.server.ICommunicationHandler;
 import rwi.internal.is.communication.SignalTransfer;
-
+/**
+ * handle means an incoming request
+ * send or forward means creating a new request
+ * @author Mr.N0I3oDy
+ *
+ */
 public class IsSignalingHandler {
 	
 	private InformationSystem is;

@@ -1,7 +1,12 @@
 package rwi.core.classes;
 
 import rwi.core.variables.RwiCommunication;
-
+/**
+ * handle means an incoming request
+ * send or forward means creating a new request
+ * @author Mr.N0I3oDy
+ *
+ */
 public class NWISSignalingHandler extends Requester {
 
 	public static void updateRange(NetWorkIS nwis,float[] newRange){
