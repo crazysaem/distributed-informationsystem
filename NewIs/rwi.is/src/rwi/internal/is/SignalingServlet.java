@@ -30,9 +30,14 @@ public class SignalingServlet extends HttpServlet{
 		switch(mode){		
 		case RwiCommunication.SIGNALING_MODE_SET_PARENT_AND_RANGE:
 			ipport = retrieveIpAndPort(req);
-			float[] range = retrieveRange(req);
-			signalhandler.handleSetParentAndRange(ipport[0], ipport[1], range);	
+			float[] range1 = retrieveRange(req);
+			signalhandler.handleSetParentAndRange(ipport[0], ipport[1], range1);	
 			resp.getWriter().write(RwiCommunication.READY);
+			break;
+		case RwiCommunication.SIGNALING_MODE_UPDATE_RANGE:
+			float[] range2 = retrieveRange(req);
+			signalhandler.handleUpdateRange(range2);
+			break;
 		}
 		
 	}

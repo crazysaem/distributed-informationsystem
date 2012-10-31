@@ -1,5 +1,7 @@
 package rwi.core.variables;
 
+import java.util.EnumMap;
+
 
 public class RwiCommunication {
 	public static final String READY = "ready";
@@ -25,7 +27,7 @@ public class RwiCommunication {
 	public static final int SIGNALING_MODE_ASK_FOR_IS = 6;
 	public static final int SIGNALING_MODE_IS_READY = 7;
 	public static final int SIGNALING_MODE_SET_PARENT_AND_RANGE = 8;
-	
+	public static final int SIGNALING_MODE_UPDATE_RANGE = 9;	
 	
 	public static final String REGISTER_SERVLET = "/register";
 	public static final String UNREGISTER_SERVLET = "/unregister";

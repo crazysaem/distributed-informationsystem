@@ -20,4 +20,7 @@ public class IsSignalingHandler {
 		is.setParentAndRange(new NetWorkIS(ip, port),range);
 	}
 	
+	public void handleUpdateRange(float[] range){
+		is.setRange(range);
+	}
 }
