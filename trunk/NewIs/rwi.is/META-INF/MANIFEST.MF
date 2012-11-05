@@ -1,14 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Is
-Bundle-SymbolicName: rwi.infosystem.is
+Bundle-SymbolicName: rwi.is
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-<<<<<<< .mine
-Import-Package: javax.servlet;version="2.5.0",
- javax.servlet.http;version="2.5.0",
- org.osgi.service.http;version="1.2.1"
-=======
 Import-Package: javax.servlet;version="2.5.0",
  javax.servlet.http;version="2.5.0",
  org.osgi.framework;version="1.6.0",
@@ -17,4 +12,3 @@ Import-Package: javax.servlet;version="2.5.0",
  rwi.core.interfaces.server,
  rwi.core.variables
 Service-Component: OSGI-INF/component.xml
->>>>>>> .r53
