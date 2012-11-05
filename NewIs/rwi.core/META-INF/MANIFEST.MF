@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Core
-Bundle-SymbolicName: rwi.core
+Bundle-SymbolicName: rwi.infosystem.core
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: rwi.core.classes,
- rwi.core.interfaces.server,
- rwi.core.variables
+Export-Package: rwi.infosystem.core.classes,
+ rwi.infosystem.core.interfaces.server,
+ rwi.infosystem.core.variables
