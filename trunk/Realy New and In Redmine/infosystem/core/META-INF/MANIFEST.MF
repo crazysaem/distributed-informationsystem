@@ -7,3 +7,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: rwi.infosystem.core.classes,
  rwi.infosystem.core.interfaces.server,
  rwi.infosystem.core.variables
+Import-Package: javax.servlet;version="2.5.0",
+ javax.servlet.http;version="2.5.0"

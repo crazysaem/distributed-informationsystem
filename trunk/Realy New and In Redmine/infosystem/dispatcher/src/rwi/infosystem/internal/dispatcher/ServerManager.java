@@ -50,9 +50,9 @@ public class ServerManager {
 
 	private void makeInfoSystem(String ip, String port) {
 		FreeServer free = available.remove(0);
-		boolean created = signaling.sendInfoSystemcreation(free.ip, free.port);
-		if (created) {
-			signaling.sendNewInfoSystem(ip, port, free.ip, free.port);
+		String newport = signaling.sendInfoSystemcreation(free.ip, free.port);
+		if (newport!=null) {
+			signaling.sendNewInfoSystem(ip, port, free.ip, newport);
 		}
 	}
 

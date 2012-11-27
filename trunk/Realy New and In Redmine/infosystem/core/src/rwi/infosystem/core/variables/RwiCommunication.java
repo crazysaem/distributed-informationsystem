@@ -15,6 +15,7 @@ public class RwiCommunication {
 	public static final String PARAMETER_RANGE = "range";
 	public static final String PARAMETER_INITDISP = "init_disp";
 	public static final String PARAMETER_INITIS = "init_is";
+	public static final String PARAMETER_SPLIT_TYPE = "spl_type";
 	
 	public static final String PARAMETER_SIGNALING_MODE = "mode";
 	public static final int SIGNALING_MODE_REGIS = 0;
@@ -27,11 +28,13 @@ public class RwiCommunication {
 	public static final int SIGNALING_MODE_IS_READY = 7;
 	public static final int SIGNALING_MODE_SET_PARENT_AND_RANGE = 8;
 	public static final int SIGNALING_MODE_UPDATE_RANGE = 9;	
+	public static final int SIGNALING_MODE_SPLIT_REQUEST = 10;
 	
 	public static final String REGISTER_SERVLET = "/register";
 	public static final String UNREGISTER_SERVLET = "/unregister";
 	public static final String POSITION_SERVLET = "/position";
 	public static final String SIGNALING_SERVLET = "/signaling";
+	public static final String INFO_SERVLET = "/info";
 	public static final String INIT_SERVLET = "/init";
 	
 	public static final String ROOT_ADDRESS = "127.0.0.1";
@@ -41,6 +44,7 @@ public class RwiCommunication {
 	public static final String REQUESTMETHOD_GET = "GET";
 	public static final String REQUESTMETHOD_DELETE = "DELETE";
 	
-	public static final int SPLIT_METHOD_HALF = 0;
-	public static final int SPLIT_METHOD_QUARTER = 1;
+	public static final int SPLIT_TYPE_ONE = 0;
+	public static final int SPLIT_TYPE_TWO = 1;
+	public static final int SPLIT_TYPE_FOUR = 2;
 }

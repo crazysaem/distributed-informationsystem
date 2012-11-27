@@ -50,5 +50,7 @@ public class SignalTransfer extends Requester{
 		message+=generateParamter(RwiCommunication.PARAMETER_PORT, ownport);
 		message+=generateParamter(RwiCommunication.PARAMETER_RANGE, range);
 		return sendRequest(target.getIp(), target.getPort(), RwiCommunication.SIGNALING_SERVLET, message, RwiCommunication.REQUESTMETHOD_POST);
+		
+		
 	}
 }

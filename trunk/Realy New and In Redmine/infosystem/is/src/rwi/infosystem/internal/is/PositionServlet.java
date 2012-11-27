@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import rwi.infosystem.core.interfaces.server.ICommunicationHandler;
+import rwi.infosystem.core.variables.RwiCommunication;
 
 public class PositionServlet extends HttpServlet{
 	
@@ -22,10 +23,7 @@ public class PositionServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String s = "Needs to be implemented again.";
-		
-		resp.setContentType("text/html;charset=UTF-8");
-		resp.getWriter().write(s);		
+		doPost(req, resp);	
 	}
 	
 	//update Position
@@ -33,6 +31,25 @@ public class PositionServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		super.doPost(req, resp);
+		
+		int id = -1;
+		float[] pos = null;
+		
+		//catch parameters
+		if (req.getParameter(RwiCommunication.PARAMETER_ID) != null && !req.getParameter(RwiCommunication.PARAMETER_ID).isEmpty())
+			id = Integer.parseInt(req.getParameter(RwiCommunication.PARAMETER_ID));
+		
+		if (req.getParameter(RwiCommunication.PARAMETER_POSITION) != null && !req.getParameter(RwiCommunication.PARAMETER_POSITION).isEmpty()){
+			String ptemp = req.getParameter(RwiCommunication.PARAMETER_POSITION);
+			String[] t = ptemp.split("-");
+			pos = new float[]{Float.parseFloat(t[0]),Float.parseFloat(t[1])};
+		}
+		
+						
+		if(id>=0 && pos !=null)
+			dis.updatePosition(id, pos);
+		
+		resp.setContentType("text/html;charset=UTF-8");
+		resp.getWriter().write("pos_updated to:"+pos[0]+","+pos[1]);
 	}
 }
