@@ -1,4 +1,4 @@
-package rwi.internal.initiator;
+package rwi.infosystem.internal.initiator;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -34,8 +34,8 @@ public class InitServlet extends HttpServlet{
 			resp.getWriter().write("created");
 			break;
 		case RwiCommunication.SIGNALING_MODE_INIT_IS:
-			i.createInformationSystem();
-			resp.getWriter().write("created");
+			String port = i.createInformationSystem();
+			resp.getWriter().write(port);
 			break;
 		}
 	}
