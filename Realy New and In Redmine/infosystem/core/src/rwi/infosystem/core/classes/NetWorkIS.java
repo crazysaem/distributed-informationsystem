@@ -90,4 +90,16 @@ public class NetWorkIS implements ICommunicationHandler{
 		//update the system in the network
 		NWISSignalingHandler.updateRange(this, range);
 	}
+
+	@Override
+	public String getInfo() {
+		//maybe implement this
+		return null;
+	}
+	
+	public boolean equals(NetWorkIS nwis){
+		if(this.port.equals(nwis.port) && this.ipaddress.equals(nwis.ipaddress))
+			return true;
+		else return false;
+	}
 }

@@ -37,7 +37,6 @@ public class SignalingServlet extends HttpServlet{
 		//A free server is ready to be used
 		case RwiCommunication.SIGNALING_MODE_SERVERREADY:
 			ipport = retrieveIpAndPort(req);
-			//((RootSignalingHandler)signalhandler).handleServerReady(ipport[0],ipport[1]);
 			exservice.execute(new Task(ipport[0], ipport[1], mode));
 			break;
 		//An object was unregistered. The ID needs to be removed from all instances.
@@ -47,7 +46,6 @@ public class SignalingServlet extends HttpServlet{
 				id = Integer.parseInt(req.getParameter(RwiCommunication.PARAMETER_ID));
 			}
 			if(id>=0){
-				//signalhandler.handleUnregister(id);
 				exservice.execute(new Task(id, mode));
 			}
 		//Someone asks for creation of an IS
@@ -55,23 +53,31 @@ public class SignalingServlet extends HttpServlet{
 			if(req.getParameter(RwiCommunication.PARAMETER_PORT) != null && !req.getParameter(RwiCommunication.PARAMETER_PORT).isEmpty()){
 				String port = req.getParameter(RwiCommunication.PARAMETER_PORT);
 				String ip = req.getRemoteAddr();				
-				//((RootSignalingHandler)signalhandler).handleAskForIs(ip, port,range);
 				exservice.execute(new Task(ip, port, mode));				
 			}
 			break;
 		//InfoSystem was created at following IP and PORT
 		case RwiCommunication.SIGNALING_MODE_IS_READY:
 			ipport = retrieveIpAndPort(req);			
-			//signalhandler.handleInfoSystemReady(ipport[0], ipport[1],range);
-			exservice.execute(new Task(req.getRemoteAddr(), ipport[1], mode));			
+			exservice.execute(new Task(ipport[0], ipport[1], mode));			
 			break;
+		//child infosystem needs to be split
+		case RwiCommunication.SIGNALING_MODE_SPLIT_REQUEST:
+			ipport = retrieveIpAndPort(req);
+			if(req.getParameter(RwiCommunication.PARAMETER_SPLIT_TYPE) != null && !req.getParameter(RwiCommunication.PARAMETER_SPLIT_TYPE).isEmpty()){
+				int type = Integer.parseInt(req.getParameter(RwiCommunication.PARAMETER_SPLIT_TYPE));
+				exservice.execute(new Task(ipport[0],ipport[1],type,RwiCommunication.SIGNALING_MODE_SPLIT_REQUEST));
+			}
 		}	
 	}
 	
 	private String[] retrieveIpAndPort(HttpServletRequest req){
 		String[] ipport = new String[2];
 		if(req.getParameter(RwiCommunication.PARAMETER_IPADR) != null && !req.getParameter(RwiCommunication.PARAMETER_IPADR).isEmpty()){
-			ipport[0] = req.getParameter(RwiCommunication.PARAMETER_IPADR);
+			ipport[0] = req.getParameter(RwiCommunication.PARAMETER_IPADR);			
+		}
+		if(ipport[0] == null){
+			ipport[0] = req.getRemoteAddr();
 		}
 		if(req.getParameter(RwiCommunication.PARAMETER_PORT) != null && !req.getParameter(RwiCommunication.PARAMETER_PORT).isEmpty()){
 			ipport[1] = req.getParameter(RwiCommunication.PARAMETER_PORT);
@@ -95,17 +101,33 @@ public class SignalingServlet extends HttpServlet{
 			this.port = port;
 			this.mode = mode;
 		}
+		Task(String ip,String port,int id,int mode){
+			this.ip = ip;
+			this.port = port;
+			this.id = id;
+			this.mode = mode;
+		}
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
-			if(mode==RwiCommunication.SIGNALING_MODE_IS_READY){
+			//infosystem is ready for usage
+			if (mode == RwiCommunication.SIGNALING_MODE_IS_READY) {
 				signalhandler.handleInfoSystemReady(ip, port);
-			}else if(mode==RwiCommunication.SIGNALING_MODE_ASK_FOR_IS){
-				((RootSignalingHandler)signalhandler).handleAskForIs(ip, port);
-			}else if(mode==RwiCommunication.SIGNALING_MODE_UNREGISTER){
+			}
+			//request for a new is 
+			else if (mode == RwiCommunication.SIGNALING_MODE_ASK_FOR_IS) {
+				((RootSignalingHandler) signalhandler).handleAskForIs(ip, port);
+			} 
+			//unregister forward 
+			else if (mode == RwiCommunication.SIGNALING_MODE_UNREGISTER) {
 				signalhandler.handleUnregister(id);
-			}else if(mode==RwiCommunication.SIGNALING_MODE_SERVERREADY){
-				((RootSignalingHandler)signalhandler).handleServerReady(ip,port);
+			} 
+			//free server is ready to be initialised with a disp / is
+			else if (mode == RwiCommunication.SIGNALING_MODE_SERVERREADY) {
+				((RootSignalingHandler) signalhandler).handleServerReady(ip,
+						port);
+			}
+			else if(mode == RwiCommunication.SIGNALING_MODE_SPLIT_REQUEST){
+				signalhandler.handleSplitRequest(ip, port, id);
 			}
 		}
 		

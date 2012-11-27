@@ -9,14 +9,18 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
 
+import rwi.infosystem.core.classes.DataTransfer;
 import rwi.infosystem.core.classes.IDGen;
+import rwi.infosystem.core.classes.InfoServlet;
 import rwi.infosystem.core.classes.NetWorkIS;
+import rwi.infosystem.core.classes.Requester;
 import rwi.infosystem.core.interfaces.server.ICommunicationHandler;
 import rwi.infosystem.core.variables.RwiCommunication;
 import rwi.infosytem.internal.dispatcher.communication.DispatchSignalingHandler;
 import rwi.infosytem.internal.dispatcher.communication.PositionServlet;
 import rwi.infosytem.internal.dispatcher.communication.RegisterServlet;
 import rwi.infosytem.internal.dispatcher.communication.RootSignalingHandler;
+import rwi.infosytem.internal.dispatcher.communication.SignalTransfer;
 import rwi.infosytem.internal.dispatcher.communication.SignalingServlet;
 
 public class Dispatcher implements ICommunicationHandler {
@@ -51,7 +55,7 @@ public class Dispatcher implements ICommunicationHandler {
 			this.signalhandler = new RootSignalingHandler(this, smanager);
 			this.smanager.setSignal((RootSignalingHandler) signalhandler);
 			signalhandler.askForInfoSystem(myport);
-			this.range = new float[] { 0, 50, 0, 50 };
+			this.range = new float[] { 0, 600, 0, 600 };
 		} else {
 			System.out.println("Dispatcher:");
 			this.signalhandler = new DispatchSignalingHandler(this);
@@ -68,6 +72,7 @@ public class Dispatcher implements ICommunicationHandler {
 			RegisterServlet regservlet = new RegisterServlet(this);
 			PositionServlet posservlet = new PositionServlet(this);
 			SignalingServlet signalservlet = new SignalingServlet(signalhandler);
+			InfoServlet infoservlet = new InfoServlet(this);
 
 			http.registerServlet(RwiCommunication.REGISTER_SERVLET, regservlet,
 					null, null);
@@ -75,7 +80,9 @@ public class Dispatcher implements ICommunicationHandler {
 					null, null);
 			http.registerServlet(RwiCommunication.SIGNALING_SERVLET,
 					signalservlet, null, null);
-
+			http.registerServlet(RwiCommunication.INFO_SERVLET,
+					infoservlet, null, null);
+			
 			System.out.println("Servlets registered.");
 		} catch (ServletException e) {
 			// TODO Auto-generated catch block
@@ -139,7 +146,9 @@ public class Dispatcher implements ICommunicationHandler {
 	@Override
 	public void unregister(int id) {
 		removeMapping(id);
-		signalhandler.forwarUnregister(parent.getIp(), parent.getPort(), id);
+		if(parent!=null){
+			signalhandler.forwarUnregister(parent.getIp(), parent.getPort(), id);
+		}
 	}
 
 	private void addMapping(int id, NetWorkIS is) {
@@ -151,7 +160,15 @@ public class Dispatcher implements ICommunicationHandler {
 	}
 
 	public void split(NetWorkIS nwis, int mode, NetWorkIS NewNwis) {
-		if(mode == RwiCommunication.SPLIT_METHOD_HALF){
+		if(mode == RwiCommunication.SPLIT_TYPE_ONE || mode == RwiCommunication.SPLIT_TYPE_TWO){
+			if(nwis.getRange()==null){
+				for (NetWorkIS nwi : infosystems) {
+					if(nwi.equals(nwis)){
+						nwis=nwi;
+						break;
+					}
+				}
+			}
 			float xl = nwis.getRange()[1]-nwis.getRange()[0];
 			float yl = nwis.getRange()[3]-nwis.getRange()[2];
 			float[] range1 =  new float[4];
@@ -172,7 +189,7 @@ public class Dispatcher implements ICommunicationHandler {
 				System.out.println("Added IS: "+NewNwis.toString());
 			}
 			
-		}else if(mode == RwiCommunication.SPLIT_METHOD_HALF){
+		}else if(mode == RwiCommunication.SPLIT_TYPE_FOUR){
 			//TODO
 		}
 	}
@@ -190,7 +207,7 @@ public class Dispatcher implements ICommunicationHandler {
 		}
 		infosystems.add(nwis);
 		System.out.println("Added IS: "+nwis.toString());
-		signalhandler.handleSplitRequest(infosystems.get(0), RwiCommunication.SPLIT_METHOD_HALF);
+		//signalhandler.handleSplitRequest(infosystems.get(0).getIp(), infosystems.get(0).getPort(),RwiCommunication.SPLIT_TYPE_ONE);
 	}
 
 	public void setParentAndRange(NetWorkIS nwis, float[] range) {
@@ -202,5 +219,30 @@ public class Dispatcher implements ICommunicationHandler {
 
 	public boolean isIsroot() {
 		return isroot;
+	}
+
+	@Override
+	public String getInfo() {
+		float width = 0;
+		float height = 0;
+		float top_pos = 0;
+		float left_pos = 0;
+		String info = "<div style=\"width:"+(range[1]-range[0])+";height:"+(range[3]-range[2])+";background-color:#eee;position:absolute;\">";//"<ul>";
+		for(NetWorkIS nwis : infosystems){
+			width = nwis.getRange()[1]-nwis.getRange()[0];
+			height = nwis.getRange()[3]-nwis.getRange()[2];
+			top_pos = (range[3]-range[2])-nwis.getRange()[2]-(nwis.getRange()[3]-nwis.getRange()[2]);
+			left_pos = nwis.getRange()[0];
+			info+= //"<li>" +
+						"<a style=\"font-size:9pt;display:block;width:"+(width)+"px;height:"+(height)+"px;top:"+top_pos+";left:"+ left_pos+"px;position:absolute;border:1px solid grey;\"" + 
+						"href=\"http://"+nwis.getIp()+":"+nwis.getPort()+RwiCommunication.INFO_SERVLET+"\">" +
+								""+nwis.getIp()+":"+nwis.getPort()+"" +
+								" with Range:" + nwis.getRange()[0]+"-"+nwis.getRange()[1]+"x : "+nwis.getRange()[2]+"-"+nwis.getRange()[3]+"y"+
+						"</a>";
+					
+					//"</li>";
+		}
+		info += "</div>";//"</ul>";
+		return info;
 	}
 }

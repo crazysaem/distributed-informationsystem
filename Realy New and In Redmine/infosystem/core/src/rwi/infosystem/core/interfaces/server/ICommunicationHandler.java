@@ -16,4 +16,5 @@ public interface ICommunicationHandler {
 	
 	public void updateState(int id,int state);
 	
+	public String getInfo();
 }

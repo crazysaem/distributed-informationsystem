@@ -31,17 +31,6 @@ public class DispatchSignalingHandler {
 		SignalTransfer.forwardUnregister(ip, port, id);
 	}
 	
-	public void handleSplitRequest(NetWorkIS nwis,int mode){
-		if(mode == RwiCommunication.SPLIT_METHOD_HALF){
-			splittemp = nwis;
-			modetemp = mode;
-			splitstate = SIGNALING_STATE_WAITING_FOR_IS;
-			SignalTransfer.askForInfoSystem(dis.getPort());	
-		}else if(mode == RwiCommunication.SPLIT_METHOD_HALF){
-			//TODO
-		}
-	}
-	
 	public void askForInfoSystem(String port){
 		this.state = SIGNALING_STATE_WAITING_FOR_IS;		
 		SignalTransfer.askForInfoSystem(port);		
@@ -64,14 +53,37 @@ public class DispatchSignalingHandler {
 	}
 	
 	public boolean setIsParentAndRange(NetWorkIS target,String ownport){
-		String result = SignalTransfer.sendParentAndRange(target, ownport, target.getRange());
-		return result.equals(RwiCommunication.READY);
+		for(int x=0;x<10;x++){
+			String result = SignalTransfer.sendParentAndRange(target, ownport, target.getRange()); 
+			if(result!=null && result.equals(RwiCommunication.READY))
+				return true;
+			else{
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return false;		
 	}
 	
 	public void setState(int state){
 		this.state = state;
 	}
 
+	public void handleSplitRequest(String ip,String port,int type){
+		if(type == RwiCommunication.SPLIT_TYPE_ONE || type == RwiCommunication.SPLIT_TYPE_TWO){
+			splittemp = new NetWorkIS(ip, port);
+			modetemp = type;
+			splitstate = SIGNALING_STATE_WAITING_FOR_IS;
+			SignalTransfer.askForInfoSystem(dis.getPort());	
+		}else if(type == RwiCommunication.SPLIT_TYPE_FOUR){
+			//TODO
+		}
+	}
+	
 	public static final int SIGNALING_STATE_NOTHING_TO_DO = 0;
 	public static final int SIGNALING_STATE_WAITING_FOR_IS = 1;
 	public static final int SIGNALING_STATE_WAITING_FOR_DS = 2;

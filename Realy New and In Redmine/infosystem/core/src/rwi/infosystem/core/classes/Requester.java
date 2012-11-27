@@ -36,8 +36,7 @@ protected static String sendRequest(String IPAddress, String Port,
 		if (ReqMethod.equals(RwiCommunication.REQUESTMETHOD_DELETE)) {
 			// send delete request without waiting for an answer(there will be none!)
 			conn.connect();
-			return "deleted";
-		} else {
+		}
 			// open a reader to get the answer of called servlet
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(conn.getInputStream()));
@@ -50,12 +49,12 @@ protected static String sendRequest(String IPAddress, String Port,
 			// finally close the reader
 			reader.close();
 			return res;
-		}
+		
 	} catch (IOException e) {
-		e.printStackTrace();
+		System.err.println(e.getMessage());
+		//e.printStackTrace();
+		return null;
 	}
-	return null;
-
 }
 
 	protected static String generateParamter(String parameter, float value) {
